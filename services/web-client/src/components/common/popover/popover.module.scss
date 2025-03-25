@@ -1,0 +1,41 @@
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/shadows" as *;
+@use "@/assets/styles/variables/animations" as *;
+@use "@/assets/styles/mixins" as *;
+
+.popover {
+  position: absolute;
+  z-index: 3000;
+  background-color: white;
+  border: 1px solid $gray-100;
+  box-shadow: $shadow-large, $shadow-small;
+  border-radius: $radius-md;
+  width: 15rem;
+  max-height: 15rem;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity $transition, transform $transition;
+  overflow-y: auto;
+  overflow-x: hidden;
+  @include scrollbar();
+  padding: 0.125rem 0;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2999;
+  cursor: default;
+  overflow: hidden;
+}
+
+.isOpen .popover {
+  opacity: 1;
+  transform: scale(1);
+}

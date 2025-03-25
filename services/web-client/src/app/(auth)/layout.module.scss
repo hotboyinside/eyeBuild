@@ -1,0 +1,100 @@
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/colors" as *;
+
+.layout {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: $gray-50;
+}
+.content,
+.banner {
+  flex: 0 0 50%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 32px;
+}
+
+.main {
+  flex: 1;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer {
+  padding: 38px 32px;
+}
+
+.banner {
+  padding: 20px;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-top: 126px;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  &::before {
+    position: absolute;
+    content: "";
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $gradient-primary;
+    opacity: 0.8;
+  }
+  &::after {
+    position: absolute;
+    content: "";
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-image: url("/images/auth-circles.svg");
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-size: contain;
+  }
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1);
+  img {
+    object-fit: cover;
+    object-position: center top;
+  }
+}
+
+.imageText {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: $font-size-xl;
+  line-height: $line-height-xl;
+  font-weight: 600;
+  z-index: 5;
+  padding: 80px;
+}

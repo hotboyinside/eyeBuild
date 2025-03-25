@@ -1,0 +1,10 @@
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/colors" as *;
+
+.container {
+  width: 100%;
+  overflow: hidden;
+  border-radius: $radius-xl;
+  background-color: white;
+  border: 1px solid $gray-200;
+}

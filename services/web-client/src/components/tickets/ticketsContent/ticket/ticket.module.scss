@@ -1,0 +1,80 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/mixins" as *;
+@use "@/assets/styles/variables/spacings" as *;
+@use "@/assets/styles/variables/radius" as *;
+
+.root {
+  @include rem("max-width", 344px);
+  background-color: white;
+  border: 1px solid $gray-200;
+  border-radius: $radius-xl;
+}
+
+.contentTop {
+  @include rem("min-height", 164px);
+  padding: $spacing-3xl $spacing-3xl 0 $spacing-3xl;
+  margin-bottom: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.description {
+  @include truncate(3);
+  @include rem("max-width", 263px);
+  margin-bottom: 0.75rem;
+}
+
+.time {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.date {
+  font-weight: 400;
+  font-size: $font-size-text-xs;
+  line-height: $line-height-text-xs;
+  color: $gray-500;
+}
+
+.arrowIcon {
+  color: $gray-500;
+}
+
+.avatarContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 $spacing-3xl $spacing-2xl $spacing-3xl;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid $gray-200;
+}
+
+.username {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $gray-700;
+}
+
+.avatarLabelExtra div {
+  @include truncate(1);
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 $spacing-3xl $spacing-xl $spacing-3xl;
+}
+
+.extraButton {
+  padding: 0.625rem;
+}

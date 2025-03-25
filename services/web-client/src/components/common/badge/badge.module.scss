@@ -1,0 +1,125 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/mixins" as *;
+
+.badge {
+  border-radius: $radius-2xl;
+  border-width: 1px;
+  border-style: solid;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  @include truncate(1);
+}
+
+.dot {
+  margin-right: 0.375rem;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: $radius-full;
+}
+
+.close {
+  margin-left: 0.125rem;
+  margin-right: -0.125rem;
+}
+
+.avatar {
+  margin-left: -0.25rem;
+  margin-right: 0.375rem;
+}
+
+.info {
+  background-color: $gray-50;
+  border-color: $gray-200;
+  color: $gray-700;
+  .dot {
+    background-color: $gray-500;
+  }
+  .close {
+    color: $gray-500;
+  }
+}
+
+.error {
+  background-color: $error-50;
+  border-color: $error-200;
+  color: $error-800;
+  .dot {
+    background-color: $error-500;
+  }
+  .close {
+    color: $error-500;
+  }
+}
+
+.success {
+  background-color: $success-50;
+  border-color: $success-200;
+  color: $success-800;
+  .dot {
+    background-color: $success-500;
+  }
+  .close {
+    color: $success-500;
+  }
+}
+
+.warning {
+  background-color: $warning-50;
+  border-color: $warning-200;
+  color: $warning-800;
+  .dot {
+    background-color: $warning-500;
+  }
+  .close {
+    color: $warning-500;
+  }
+}
+
+.brand {
+  background-color: $brand-50;
+  border-color: $brand-200;
+  color: $brand-800;
+  .dot {
+    background-color: $brand-500;
+  }
+  .close {
+    color: $brand-500;
+  }
+}
+
+.sm {
+  height: 1.375rem;
+  padding: 0.125rem 0.5rem;
+  font-size: $font-size-text-xs;
+  line-height: $line-height-text-xs;
+  &.isIcon {
+    padding: 0.125rem;
+    width: 1.375rem;
+  }
+}
+
+.md {
+  height: 1.5rem;
+  padding: 0.125rem 0.625rem;
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+  &.isIcon {
+    padding: 0.125rem;
+    width: 1.5rem;
+  }
+}
+
+.lg {
+  height: 1.75rem;
+  padding: 0.25rem 0.75rem;
+  font-size: $font-size-text-md;
+  line-height: $line-height-text-md;
+  &.isIcon {
+    padding: 0.25rem;
+    width: 1.75rem;
+  }
+}

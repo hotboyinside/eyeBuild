@@ -1,0 +1,12 @@
+stages:
+  - move_review_to_resolved
+  - move_resolved_to_rft
+  - update_staging
+  - update_proxy
+  - update_release
+
+include:
+  - 'pipelines/proxy.yml'
+  - 'pipelines/staging.yml'
+  - 'pipelines/jira.yml'
+  - 'pipelines/release.yml'

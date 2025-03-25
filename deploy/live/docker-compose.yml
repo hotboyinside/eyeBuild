@@ -1,0 +1,74 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: '10m'
+    max-file: '5'
+
+services:
+  web-client:
+    build:
+      context: ../../services/web-client
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+    logging: *default-logging
+    restart: always
+    environment:
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+      - NEXT_PUBLIC_ADMIN_EMAIL=${NEXT_PUBLIC_ADMIN_EMAIL}
+    labels:
+      - io.portainer.accesscontrol.teams=eyebuild
+
+  core:
+    build:
+      context: ../../services/core
+      dockerfile: Dockerfile
+    logging: *default-logging
+    depends_on:
+      - mongo
+      - traefik
+    restart: always
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN}
+      - MONGO_URL=${MONGO_URL}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+      - CLIENT_URL=${CLIENT_URL}
+      - SUPERADMIN_USERNAME=${SUPERADMIN_USERNAME}
+      - SUPERADMIN_EMAIL=${SUPERADMIN_EMAIL}
+      - SUPERADMIN_PASSWORD=${SUPERADMIN_PASSWORD}
+      - SUPERADMIN_PHONE=${SUPERADMIN_PHONE}
+    labels:
+      - io.portainer.accesscontrol.teams=eyebuild
+
+  mongo:
+    image: mongo:7
+    logging: *default-logging
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+    labels:
+      - io.portainer.accesscontrol.teams=eyebuild
+
+  traefik:
+    build: traefik
+    restart: always
+    networks:
+      - traefik
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro

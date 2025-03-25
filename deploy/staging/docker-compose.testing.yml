@@ -1,0 +1,36 @@
+services:
+  web-client:
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.web-client-test.rule=Host(`test-eyebuild.staging.forasoft.com`) && PathPrefix(`/`)
+      - traefik.http.routers.web-client-test.entrypoints=http
+      - traefik.http.services.web-client-test.loadbalancer.server.port=3000
+      - io.portainer.accesscontrol.teams=eyebuild
+    networks:
+      - testing
+      - traefik
+
+  core:
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.backend-test.rule=Host(`test-eyebuild.staging.forasoft.com`) && PathPrefix(`/core`)
+      - traefik.http.routers.backend-test.entrypoints=http
+      - traefik.http.services.backend-test.loadbalancer.server.port=8000
+      - io.portainer.accesscontrol.teams=eyebuild
+    networks:
+      - testing
+      - traefik
+
+  mongo:
+    volumes:
+      - /data/eyebuild/testing/mongo:/data/db
+    networks:
+      - testing
+
+networks:
+  traefik:
+    external:
+      name: traefik
+  testing:

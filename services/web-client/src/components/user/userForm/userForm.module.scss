@@ -1,0 +1,21 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/animations" as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.superadminIcon,
+.adminIcon {
+  color: $error-500;
+}
+
+.franchiseeIcon {
+  color: $warning-500;
+}
+
+.clientIcon {
+  color: $gray-500;
+}

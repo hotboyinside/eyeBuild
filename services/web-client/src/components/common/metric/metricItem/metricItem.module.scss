@@ -1,0 +1,40 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/mixins" as *;
+
+.metricItem {
+    width: 20rem;
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem;
+    background-color: white;
+    border: 1px solid $gray-200;
+    border-radius: $radius-xl;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.title {
+    @include truncate(1);
+    color: $gray-600;
+    font-weight: 500;
+    font-size: $font-size-text-sm;
+    line-height: $line-height-text-sm;
+}
+
+.value {
+    @include truncate(1);
+    color: $gray-900;
+    font-weight: 600;
+    font-size: $font-size-sm;
+    line-height: $line-height-sm;
+}

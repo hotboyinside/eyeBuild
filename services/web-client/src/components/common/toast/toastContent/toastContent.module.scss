@@ -1,0 +1,12 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+.content {
+    font-weight: 400;
+    color: $gray-700;
+    font-size: $font-size-text-sm;
+    line-height: $line-height-text-sm;
+    padding-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}

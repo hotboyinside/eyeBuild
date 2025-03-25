@@ -1,0 +1,215 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/shadows" as *;
+@use "@/assets/styles/variables/animations" as *;
+.tooltipWrap {
+    position: relative;
+    &:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+    }
+    &:hover .tooltip.noShow {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.tooltip {
+    position: absolute;
+    width: auto;
+    z-index: 1;
+    border-radius: $radius-md;
+    box-shadow: $shadow-small, $shadow-large;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity $transition;
+}
+
+.withCaret::before {
+    position: absolute;
+    content: "";
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 1px;
+}
+
+.md {
+    padding: 0.5rem 0.75rem;
+    max-width: 20rem;
+}
+
+.lg {
+    padding: 0.75rem;
+    width: 20rem;
+}
+
+.title {
+    text-wrap: nowrap;
+    font-size: $font-size-text-xs;
+    line-height: $line-height-text-xs;
+    font-weight: 600;
+}
+
+.desc {
+    font-weight: 400;
+    font-size: $font-size-text-xs;
+    line-height: $line-height-text-xs;
+}
+
+.light {
+    background-color: white;
+    &.withCaret::before {
+        background-color: white;
+    }
+    .title {
+        color: $gray-700;
+    }
+    .desc {
+        color: $gray-600;
+    }
+}
+
+.dark {
+    background-color: $gray-900;
+    &.withCaret::before {
+        background-color: $gray-900;
+    }
+    .title,
+    .desc {
+        color: white;
+    }
+}
+
+.top,
+.top-start,
+.top-end {
+    top: -0.375rem;
+    &.withCaret::before {
+        bottom: 0;
+    }
+}
+.top {
+    transform: translate(-50%, -100%);
+    left: 50%;
+    &.withCaret::before {
+        left: 50%;
+        transform: translate(-50%, 37.5%) rotate(45deg);
+    }
+}
+.top-start {
+    left: 0;
+    transform: translate(0, -100%);
+    &.withCaret::before {
+        left: 0.75rem;
+        transform: translate(0, 37.5%) rotate(45deg);
+    }
+}
+.top-end {
+    right: 0;
+    transform: translate(0, -100%);
+    &.withCaret::before {
+        right: 0.75rem;
+        transform: translate(0, 37.5%) rotate(45deg);
+    }
+}
+
+.bottom,
+.bottom-start,
+.bottom-end {
+    bottom: -0.375rem;
+    &.withCaret::before {
+        top: 0;
+    }
+}
+.bottom {
+    transform: translate(-50%, 100%);
+    left: 50%;
+    &.withCaret::before {
+        left: 50%;
+        transform: translate(-50%, -37.5%) rotate(45deg);
+    }
+}
+.bottom-start {
+    left: 0;
+    transform: translate(0, 100%);
+    &.withCaret::before {
+        left: 0.75rem;
+        transform: translate(0, -37.5%) rotate(45deg);
+    }
+}
+.bottom-end {
+    right: 0;
+    transform: translate(0, 100%);
+    &.withCaret::before {
+        right: 0.75rem;
+        transform: translate(0, -37.5%) rotate(45deg);
+    }
+}
+
+.left,
+.left-start,
+.left-end {
+    left: -0.375rem;
+    &.withCaret::before {
+        right: 0;
+    }
+}
+.left {
+    transform: translate(-100%, -50%);
+    top: 50%;
+    &.withCaret::before {
+        top: 50%;
+        transform: translate(37.5%, -50%) rotate(45deg);
+    }
+}
+.left-start {
+    top: 0;
+    transform: translate(-100%, 0);
+    &.withCaret::before {
+        top: 0.75rem;
+        transform: translate(37.5%, 0) rotate(45deg);
+    }
+}
+.left-end {
+    bottom: 0;
+    transform: translate(-100%, 0);
+    &.withCaret::before {
+        bottom: 0.75rem;
+        transform: translate(37.5%, 0) rotate(45deg);
+    }
+}
+
+.right,
+.right-start,
+.right-end {
+    right: -0.375rem;
+    &.withCaret::before {
+        left: 0;
+    }
+}
+.right {
+    transform: translate(100%, -50%);
+    top: 50%;
+    &.withCaret::before {
+        top: 50%;
+        transform: translate(-37.5%, -50%) rotate(45deg);
+    }
+}
+.right-start {
+    top: 0;
+    transform: translate(100%, 0);
+    &.withCaret::before {
+        top: 0.75rem;
+        transform: translate(-37.5%, 0) rotate(45deg);
+    }
+}
+.right-end {
+    bottom: 0;
+    transform: translate(100%, 0);
+    &.withCaret::before {
+        bottom: 0.75rem;
+        transform: translate(-37.5%, 0) rotate(45deg);
+    }
+}

@@ -1,0 +1,28 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/animations" as *;
+
+.errorList {
+    margin-top: 0.75rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.errorItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $gray-600;
+    font-weight: 400;
+    font-size: $font-size-text-sm;
+    line-height: $line-height-text-sm;
+}
+
+.icon {
+    color: $gray-300;
+    &.isSuccess {
+        color: $brand-600;
+    }
+}

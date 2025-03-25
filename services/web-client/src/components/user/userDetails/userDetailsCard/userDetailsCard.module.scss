@@ -1,0 +1,50 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/mixins" as *;
+
+.card {
+  width: 100%;
+  padding: 1.25rem 1.5rem 1.5rem;
+  background-color: $gray-25;
+  border: 1px solid $gray-200;
+  border-radius: $radius-xl;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.label,
+.value {
+  @include truncate(1);
+}
+
+.label {
+  flex: 0 0 8.75rem;
+  font-weight: 600;
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+  color: $gray-700;
+}
+
+.value {
+  color: $gray-900;
+  font-size: $font-size-text-md;
+  line-height: $line-height-text-md;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon {
+  color: $gray-500;
+}

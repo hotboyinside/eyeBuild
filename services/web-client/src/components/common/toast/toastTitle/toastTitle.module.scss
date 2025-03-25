@@ -1,0 +1,9 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+
+.title {
+    font-weight: 600;
+    color: $gray-900;
+    font-size: $font-size-text-sm;
+    line-height: $line-height-text-sm;
+}

@@ -1,0 +1,7 @@
+@use "@/assets/styles/variables/colors" as *;
+.row {
+  border-bottom: 1px solid $gray-200;
+  &:last-child {
+    border-bottom: none;
+  }
+}

@@ -1,0 +1,27 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/animations" as *;
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  cursor: pointer;
+  color: $gray-700;
+  background-color: transparent;
+  transition: background-color $transition, color $transition;
+  &:hover {
+    background-color: $gray-50;
+    .icon {
+      color: $gray-600;
+    }
+  }
+}
+
+.icon {
+  color: $gray-500;
+}

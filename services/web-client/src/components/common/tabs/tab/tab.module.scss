@@ -1,0 +1,72 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/variables/animations" as *;
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color $transition, background-color $transition,
+    border-color $transition;
+}
+
+.md {
+  padding: 0.5rem 0.75rem;
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+}
+
+.lg {
+  padding: 0.625rem 0.875rem;
+  font-size: $font-size-text-md;
+  line-height: $line-height-text-md;
+}
+
+.fullWidth {
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+
+.outlined {
+  margin: -1px;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  color: $gray-700;
+  background-color: transparent;
+  &:hover {
+    color: $gray-800;
+    background-color: $gray-100;
+  }
+  &.active {
+    color: $gray-800;
+    background-color: white;
+    border-color: $gray-200;
+  }
+  &:disabled {
+    color: $gray-500;
+    background-color: transparent;
+  }
+  &.active:disabled{
+    color: $gray-500;
+    background-color: transparent;
+  }
+}
+
+.underline {
+  color: $gray-500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  &:hover {
+    color: $gray-600;
+    border-color: $gray-300;
+  }
+  &.active {
+    color: $brand-600;
+    border-color: $brand-600;
+  }
+
+  &:disabled {
+    color: $gray-500;
+  }
+}

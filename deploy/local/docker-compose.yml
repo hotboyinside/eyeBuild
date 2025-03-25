@@ -1,0 +1,88 @@
+services:
+
+  web-client:
+    build:
+      context: ../../services/web-client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - "../../services/web-client:/app"
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+      - NEXT_PUBLIC_ADMIN_EMAIL=${NEXT_PUBLIC_ADMIN_EMAIL}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.web-client.rule=Host(`eyebuild.localhost`) && PathPrefix(`/`)
+      - traefik.http.routers.web-client.entrypoints=http
+      - traefik.http.services.web-client.loadbalancer.server.port=3000
+    networks:
+      - traefik
+
+  core:
+    restart: always
+    build:
+      context: ../../services/core
+      dockerfile: Dockerfile.dev
+    volumes:
+      - "../../services/core:/app"
+    ports:
+      - "8000:8000"
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN}
+      - MONGO_URL=${MONGO_URL}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+      - CLIENT_URL=${CLIENT_URL}
+      - SUPERADMIN_USERNAME=${SUPERADMIN_USERNAME}
+      - SUPERADMIN_EMAIL=${SUPERADMIN_EMAIL}
+      - SUPERADMIN_PASSWORD=${SUPERADMIN_PASSWORD}
+      - SUPERADMIN_PHONE=${SUPERADMIN_PHONE}
+      - SUPERADMIN_COMPANY_NAME=${SUPERADMIN_COMPANY_NAME}
+      - SUPERADMIN_FULLNAME=${SUPERADMIN_FULLNAME}
+      - SUPERADMIN_COMPANY_EMAIL=${SUPERADMIN_COMPANY_EMAIL} 
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.backend.rule=Host(`eyebuild.localhost`) && PathPrefix(`/core`)
+      - traefik.http.routers.backend.entrypoints=http
+      - traefik.http.services.backend.loadbalancer.server.port=8000
+    depends_on:
+      - mongo
+      - traefik
+    networks:
+      - traefik
+  
+  mongo:
+    image: mongo:7
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
+    volumes:
+      - /data/eyebuild/mongo:/data/db
+    networks:
+      - traefik
+
+  traefik:
+    build: traefik
+    restart: always
+    networks:
+      - traefik
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+
+networks:
+  traefik:
+    driver: bridge

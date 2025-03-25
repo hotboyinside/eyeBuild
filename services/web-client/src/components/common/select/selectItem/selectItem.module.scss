@@ -1,0 +1,29 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/variables/animations" as *;
+
+.item {
+  width: 100%;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $gray-700;
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+  padding: 0.625rem 0.875rem;
+  transition: color $transition, background-color $transition;
+  cursor: pointer;
+  &:hover,
+  &.active {
+    background-color: $gray-50;
+  }
+}
+
+.text {
+  flex-grow: 1;
+}
+
+.endIcon{
+  color: $brand-600;
+}

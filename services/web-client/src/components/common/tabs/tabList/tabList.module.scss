@@ -1,0 +1,36 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/variables/animations" as *;
+
+.tabList {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+}
+
+.md {
+  min-height: 2.375rem;
+}
+
+.lg {
+  min-height: 2.875rem;
+}
+
+.outlined {
+  border-radius: $radius-xl;
+  background-color: $gray-50;
+  border: 1px solid $gray-200;
+  gap: 0.3125rem;
+}
+
+.underline {
+  background-color: transparent;
+  border-bottom: 1px solid $gray-200;
+  gap: 0.8125rem;
+}
+
+.wideTabList,
+.fullWidth {
+  width: 100%;
+}

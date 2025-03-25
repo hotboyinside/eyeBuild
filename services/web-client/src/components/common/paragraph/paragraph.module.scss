@@ -1,0 +1,15 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+
+
+.paragraph {
+  color: $gray-600;
+}
+.md {
+  font-size: $font-size-text-md;
+  line-height: $line-height-text-md;
+}
+.sm {
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+}

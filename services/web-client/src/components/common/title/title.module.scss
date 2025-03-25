@@ -1,0 +1,37 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+
+.title {
+  color: $gray-900;
+}
+
+.md {
+  font-size: $font-size-text-md;
+  line-height: $line-height-text-md;
+}
+
+.lg {
+  font-size: $font-size-text-lg;
+  line-height: $line-height-text-lg;
+}
+
+.xl {
+  font-size: $font-size-sm;
+  line-height: $line-height-sm;
+}
+
+.normal {
+  font-weight: 400;
+}
+
+.medium {
+  font-weight: 500;
+}
+
+.semibold {
+  font-weight: 600;
+}
+
+.bold {
+  font-weight: 700;
+}

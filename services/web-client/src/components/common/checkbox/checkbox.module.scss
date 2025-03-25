@@ -1,0 +1,149 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/variables/animations" as *;
+@use "@/assets/styles/variables/radius" as *;
+
+.checkboxWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  &:checked + .customCheckbox {
+    background-color: $brand-500;
+    border-color: $brand-500;
+    &:hover {
+      background-color: $brand-600;
+    }
+  }
+  &:focus + .customCheckbox {
+    outline-color: $brand-500;
+  }
+  &:disabled + .customCheckbox {
+    cursor: default;
+    background-color: $gray-50;
+    border-color: $gray-200;
+  }
+  &:checked:disabled + .customCheckbox {
+    background-color: $gray-100;
+    border-color: $gray-200;
+  }
+}
+
+.customCheckbox {
+  position: relative;
+  border: 1px solid transparent;
+  transition: all $transition;
+  background-color: transparent;
+  border-color: $gray-300;
+  cursor: pointer;
+  outline-offset: 2px;
+  outline: 2px solid transparent;
+  &:focus {
+    outline-color: $brand-500;
+  }
+  &:hover {
+    border-color: $brand-600;
+    background-color: $brand-50;
+  }
+}
+
+.sm .customCheckbox {
+  width: 1rem;
+  height: 1rem;
+  background-size: 0.75rem;
+  margin-top: 0.125rem;
+}
+.sm.tertiary.customCheckbox {
+  background-size: 0.625rem;
+}
+
+.md {
+  .customCheckbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    background-size: 0.875rem;
+  }
+}
+
+.primary .customCheckbox,
+.tertiary .customCheckbox {
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.primary .checkbox {
+  &:checked + .customCheckbox {
+    background-image: url("/images/icons/check-white.svg");
+  }
+  &:checked:disabled + .customCheckbox {
+    background-image: url("/images/icons/check-gray.svg");
+  }
+}
+
+.primary.sm .customCheckbox {
+  border-radius: $radius-xs;
+}
+.primary.md .customCheckbox {
+  border-radius: $radius-sm;
+}
+
+.secondary .customCheckbox,
+.tertiary .customCheckbox {
+  border-radius: $radius-full;
+}
+
+.secondary .checkbox:checked + .customCheckbox::after {
+  position: absolute;
+  content: "";
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: $radius-full;
+  background-color: #fff;
+}
+.secondary .checkbox:disabled + .customCheckbox::after {
+  background-color: $gray-200;
+}
+.secondary.sm .checkbox:checked + .customCheckbox::after {
+  width: 0.375rem;
+  height: 0.375rem;
+}
+.secondary.md .checkbox:checked + .customCheckbox::after {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.tertiary .checkbox {
+  &:checked + .customCheckbox {
+    background-image: url("/images/icons/check-white.svg");
+  }
+  &:checked:disabled + .customCheckbox {
+    background-color: $gray-200;
+    border-color: $gray-200;
+  }
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+}
+.title,
+.description {
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+}
+.title {
+  font-weight: 500;
+  color: $gray-700;
+}
+
+.description {
+  font-weight: 400;
+  color: $gray-600;
+}

@@ -1,0 +1,1 @@
+export { TableUsersTabs } from "./tableUsersTabs";

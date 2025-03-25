@@ -1,0 +1,74 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/animations" as *;
+
+.sidebar {
+  height: 100%;
+  background-color: #fff;
+  border: 1px solid $gray-200;
+  border-radius: $radius-2xl;
+  transition: width $transition, padding $transition;
+  padding: 1rem;
+  width: 304px;
+  &.isCollapsed {
+    width: 66px;
+    padding: 1rem 0.75rem;
+    .header {
+      padding: 0.5rem 0 1.5rem 0;
+    }
+    .logo {
+      width: 0;
+    }
+    .logoWrap{
+      flex-grow: 0;
+    }
+    .sidebarButton svg {
+      transform: scale(1);
+    }
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 0.25rem 1.5rem 0.25rem;
+  border-bottom: 1px solid #eee;
+  transition: padding $transition;
+}
+
+.logoWrap{
+  flex-grow: 1;
+  transition: flex-grow $transition;
+}
+
+.logo {
+  width: 139px;
+  transition: width $transition;
+}
+
+.sidebarButton {
+  svg {
+    transition: color $transition, transform $transition;
+  }
+}
+
+.sidebarButton svg {
+  transform: scale(-1);
+}
+
+.content {
+  flex-grow: 1;
+  padding: 1.5rem 0;
+}
+
+.footer {
+  margin-top: 0;
+  transition: margin-top $transition;
+}

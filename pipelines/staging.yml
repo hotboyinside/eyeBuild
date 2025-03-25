@@ -1,0 +1,14 @@
+update_staging:
+  stage: update_staging
+  image: forasoft/dind
+  tags:
+    - eyebuild-deploy
+  script:
+    - docker-compose --compatibility -p eyebuild_${CI_COMMIT_REF_NAME} -f deploy/staging/docker-compose.yml -f deploy/staging/docker-compose.${CI_COMMIT_REF_NAME}.yml up -d --force-recreate --build
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^(develop)$/
+      when: always
+    - if: $CI_COMMIT_REF_NAME =~ /^(testing|demo)$/
+      when: manual

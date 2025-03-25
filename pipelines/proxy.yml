@@ -1,0 +1,25 @@
+.proxy-base:
+  stage: update_proxy
+  image: forasoft/dind
+  script:
+    - docker-compose --compatibility -p eyebuild -f docker-compose.proxy.yml up -d --build --force-recreate
+
+Update Proxy Staging:
+  extends: .proxy-base
+  tags:
+    - eyebuild-deploy
+  before_script:
+    - cd ${CI_PROJECT_DIR}/deploy/staging
+  rules:
+    - if: '$UPDATE_PROXY_STAGING == "TRUE"'
+      when: always
+
+Update Proxy live:
+  extends: .proxy-base
+  tags:
+    - eyebuild-live-deploy
+  before_script:
+    - cd ${CI_PROJECT_DIR}/deploy/live
+  rules:
+    - if: '$UPDATE_PROXY_LIVE == "TRUE"'
+      when: always

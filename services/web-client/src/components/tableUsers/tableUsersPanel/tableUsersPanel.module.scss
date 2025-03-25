@@ -1,0 +1,100 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/animations" as *;
+@use "@/assets/styles/mixins" as *;
+
+.header {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid $gray-200;
+}
+
+.container {
+  min-height: 40rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableWrap {
+  flex-grow: 1;
+}
+
+.table {
+  height: 100%;
+  &.isEmpty {
+    min-height: 36rem;
+  }
+}
+
+.emptyDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.textWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 24rem;
+}
+
+.headCell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 4px;
+}
+
+.headCellIcon {
+  color: $gray-400;
+}
+
+.row {
+  cursor: pointer;
+  transition: background-color $transition;
+  &:hover {
+    background-color: $gray-50;
+  }
+  &.isFew:last-child {
+    border-bottom: 1px solid $gray-200;
+  }
+}
+
+.phone,
+.email,
+.companyName,
+.cameras,
+.popover {
+  @include truncate(1);
+}
+
+.avatarCard,
+.companyName,
+.phone,
+.email {
+  min-width: 8rem;
+}
+
+.cameras {
+  min-width: 5rem;
+  color: $gray-900;
+  font-weight: 500;
+}
+
+.popover {
+  
+  overflow: visible;
+}
+
+.truncate {
+  @include truncate(2);
+}
+
+.highlight {
+  color: $brand-600;
+  background-color: transparent;
+}

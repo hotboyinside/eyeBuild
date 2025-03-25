@@ -1,0 +1,36 @@
+services:
+  web-client:
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.web-client-demo.rule=Host(`demo-eyebuild.staging.forasoft.com`) && PathPrefix(`/`)
+      - traefik.http.routers.web-client-demo.entrypoints=http
+      - traefik.http.services.web-client-demo.loadbalancer.server.port=3000
+      - io.portainer.accesscontrol.teams=eyebuild
+    networks:
+      - demo
+      - traefik
+
+  core:
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.backend-demo.rule=Host(`demo-eyebuild.staging.forasoft.com`) && PathPrefix(`/core`)
+      - traefik.http.routers.backend-demo.entrypoints=http
+      - traefik.http.services.backend-demo.loadbalancer.server.port=8000
+      - io.portainer.accesscontrol.teams=eyebuild
+    networks:
+      - demo
+      - traefik
+
+  mongo:
+    volumes:
+      - /data/eyebuild/demo/mongo:/data/db
+    networks:
+      - demo
+
+networks:
+  traefik:
+    external:
+      name: traefik
+  demo:

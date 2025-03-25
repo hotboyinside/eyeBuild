@@ -1,0 +1,142 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/variables/radius" as *;
+@use "@/assets/styles/variables/animations" as *;
+
+.wrapper {
+  display: flex;
+}
+
+.vertical {
+  flex-direction: column;
+  .label + .field {
+    margin-top: 0.375rem;
+  }
+}
+
+.horizontal {
+  flex-wrap: wrap;
+  .label {
+    flex: 0 1 17.5rem;
+    & + .field {
+      margin-left: 0.375rem;
+    }
+  }
+  .field {
+    flex: 0 1 30rem;
+  }
+}
+
+.label {
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+  color: $gray-700;
+  font-weight: 500;
+}
+
+.labelRequired {
+  color: $brand-600;
+}
+
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  & + .errorText {
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      max-height $transition-error,
+      opacity $transition-error,
+      visibility $transition-error,
+      margin-top $transition-error;
+    &.show {
+      margin-top: 0.375rem;
+      max-height: max-content;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid $gray-300;
+  border-radius: $radius-xl;
+  color: $gray-900;
+  font-weight: 400;
+  font-size: $font-size-text-md;
+  line-height: $line-height-text-md;
+  transition: border-color $transition;
+  caret-color: $brand-500;
+
+  &::placeholder {
+    color: $gray-300;
+  }
+  &:focus {
+    border-color: $brand-500;
+    outline: none;
+  }
+  &:disabled {
+    background-color: $gray-50;
+  }
+}
+
+.sm{
+  height: 2.5rem;
+}
+
+.md {
+  height: 2.75rem;
+}
+
+.error {
+  border-color: $error-300;
+}
+
+.errorText {
+  color: $error-700;
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+  font-weight: 400;
+}
+
+.inputPassword {
+  padding-right: 2.75rem;
+}
+.toggleVisibility {
+  position: absolute;
+  right: 0.125rem;
+  color: $gray-400;
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.withStartIcon .input {
+  padding-left: 2.625rem;
+}
+
+.withEndIcon .input {
+  padding-right: 2.625rem;
+}
+
+.startIcon,
+.endIcon {
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $gray-500;
+}
+
+.startIcon {
+  left: 0.875rem;
+}
+.endIcon {
+  right: 0.875rem;
+}

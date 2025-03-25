@@ -1,0 +1,6 @@
+@use "@/assets/styles/variables/colors" as *;
+
+.head {
+  background-color: $gray-50;
+  border-bottom: 1px solid $gray-200;
+}
