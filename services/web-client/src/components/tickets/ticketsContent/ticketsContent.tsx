@@ -1,17 +1,17 @@
 "use client";
 
 import { Tabs, TabList, Tab, TabPanel, Badge } from "@/components/common";
-import { Status } from "@/constants/tickets/tickets.enum";
+import { TicketStatuses } from "@/enums/tickets.enum";
 import { useTicketStore } from "@/store/ticket";
 import { useEffect } from "react";
 import { TicketCards } from "./ticketCards";
-import { getCountTicketsForShowing } from "@/helpers/utils";
 
 import styles from "./ticketsContent.module.scss";
+import { formatCountTicketsForShowing } from "@/helpers/format.helper";
+
+const tabStatuses = Object.values(TicketStatuses);
 
 export const TicketsContent = () => {
-  const tabStatuses = Object.values(Status);
-
   const {
     search,
     tickets,
@@ -22,11 +22,11 @@ export const TicketsContent = () => {
     setStatus,
   } = useTicketStore();
 
-  const countPendingTickets = getCountTicketsForShowing(
+  const countPendingTickets = formatCountTicketsForShowing(
     pagination.totalPendingTickets
   );
 
-  const onCloseTicketClick = (id: string, status: Status) => {
+  const onCloseTicketClick = (id: string, status: TicketStatuses) => {
     updateTicket(id, { status: status });
     fetchTickets();
   };
@@ -46,7 +46,7 @@ export const TicketsContent = () => {
           {tabStatuses.map((status, index) => (
             <Tab key={status} index={index}>
               {status}
-              {status === Status.PENDING && countPendingTickets ? (
+              {status === TicketStatuses.PENDING && countPendingTickets ? (
                 <Badge
                   className={styles.counterTickets}
                   severity='info'

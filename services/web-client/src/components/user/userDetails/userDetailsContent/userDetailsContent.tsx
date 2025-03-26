@@ -1,8 +1,7 @@
-import { getCapitalize } from "@/helpers/utils";
 import { UserDetailsCard } from "../userDetailsCard";
 import styles from "./userDetailsContent.module.scss";
 import { IUserBase } from "@/types/user";
-import { formatPhone } from "@/helpers";
+import { formatRole, formatPhone } from "@/helpers";
 import {
   AtIcon,
   CompanyIcon,
@@ -41,7 +40,7 @@ export const UserDetailsContent = ({ userData }: { userData: IUserBase }) => {
   const accountSettings = [
     {
       label: "Role",
-      value: getCapitalize(userData.role),
+      value: formatRole(userData.role),
       icon: <DotIcon size={Sizes.LG} />,
     },
     {

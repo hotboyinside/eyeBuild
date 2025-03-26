@@ -7,7 +7,7 @@ import {
   UsersIcon,
   VideocameraIcon,
 } from "@/components/common";
-import { Role } from "./roles";
+import { Role } from "../enums/role.enum";
 import { Page } from "./routes";
 
 const baseMenu = [

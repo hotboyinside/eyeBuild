@@ -43,5 +43,4 @@ export { DotIcon } from "./svg/dotIcon";
 export { RoleIcon } from "./svg/roleIcon";
 export { AtIcon } from "./svg/atIcon";
 export { AltArrowIcon } from "./svg/altArrowIcon";
-export { LinkIcon } from "./svg/linkIcon";
-export { DownloadIcon } from "./svg/downloadIcon";
+export { ArrowRightUpIcon } from "./svg/arrowRightUpIcon";

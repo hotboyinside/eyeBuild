@@ -1,14 +1,17 @@
 "use client";
 import { UserDetails } from "@/components/user";
+import { Page } from "@/constants/routes";
 import { Severity } from "@/enums/severity.enum";
 import { useToast } from "@/hooks/useToast";
 import { getUserById } from "@/services/user.service";
+import { useCurrentUser } from "@/store/currentUser";
 import { IUserBase } from "@/types/user";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function UserEdit() {
+export default function UserInfo() {
   const params = useParams();
+  const { user } = useCurrentUser();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const [userData, setUserData] = useState<IUserBase | null>(null);
   const [loading, setLoading] = useState(true);
@@ -17,6 +20,10 @@ export default function UserEdit() {
 
   useEffect(() => {
     if (!id) return;
+
+    if (user && user._id === id) {
+      router.push(Page.PROFILE);
+    }
 
     getUserById(id)
       .then((user) => {
@@ -31,7 +38,7 @@ export default function UserEdit() {
           title: "Error loading user data",
         });
       });
-  }, [id, router, showToast]);
+  }, [id, router, showToast, user]);
 
   if (loading) return <>Loading...</>;
   if (!userData) return <p>Error loading user</p>;

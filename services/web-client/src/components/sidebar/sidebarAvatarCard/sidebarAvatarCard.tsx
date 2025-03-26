@@ -16,8 +16,8 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { logout } from "@/services/auth.service";
 import { SidebarModal } from "../sidebarModal";
-import { getInitials } from "@/helpers/utils";
 import { useCurrentUser } from "@/store/currentUser";
+import { formatInitials } from "@/helpers";
 
 export const SidebarAvatarCard = ({
   collapsed,
@@ -31,7 +31,7 @@ export const SidebarAvatarCard = ({
   const [initials, setInitials] = useState("");
 
   useEffect(() => {
-    setInitials(fullname ? getInitials(fullname) : "");
+    setInitials(fullname ? formatInitials(fullname) : "");
   }, [fullname]);
 
   const handleProfileRedirect = useCallback(
@@ -84,12 +84,7 @@ export const SidebarAvatarCard = ({
         />
       </AvatarCard>
       <div className={styles.buttonWrap}>
-        <Tooltip
-          title="Log Out"
-          placement="top"
-          variant="dark"
-          noCaret
-        >
+        <Tooltip title="Log Out" placement="top" variant="dark" noCaret>
           <Button
             className={styles.button}
             variant="contained"

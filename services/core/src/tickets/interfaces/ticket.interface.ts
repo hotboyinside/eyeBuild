@@ -1,15 +1,16 @@
 import { Types } from 'mongoose';
 import { Role } from 'src/common/enums/roles.enum';
+import { User } from 'src/users/schemas/user.schema';
 import {
-  Status,
+  TicketStatuses,
   TicketsOrder,
   TicketsSortBy,
-  Type,
+  TicketTypes,
 } from 'src/common/enums/tickets.enum';
 
-export interface IFilter {
+export interface ITicketFilter {
   role: Role;
-  status: Status;
+  status: TicketStatuses;
 }
 
 export interface ITicket {
@@ -19,15 +20,15 @@ export interface ITicket {
   fullName: string;
   email: string;
   companyName: string;
-  type: Type;
-  status: Status;
+  type: TicketTypes;
+  status: TicketStatuses;
   reason: string;
   createdAt: string;
   closedDate?: string;
   paymentId?: string;
 }
 
-export interface IPagination {
+export interface ITicketPagination {
   total: number;
   totalPendingTickets: number;
   pages: number;
@@ -39,10 +40,10 @@ export interface IPagination {
 
 export interface IAllTicketsResponse {
   tickets: ITicket[];
-  pagination: IPagination;
+  pagination: ITicketPagination;
 }
 
-export interface ITicketsAfterAggregation {
+export interface ITicketsResult {
   tickets: ITicket[];
   totalCount: { count: number }[];
   totalPendingTickets: { count: number }[];

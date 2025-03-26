@@ -5,8 +5,8 @@ import { convertToMs } from 'src/common/utils/converter.util';
 import { getConfigData } from 'src/common/utils/config.util';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { Public } from './decorators/public.decorator';
 import { IRequest } from 'src/common/interfaces/request.interface';
+import { Public } from './decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {

@@ -1,4 +1,4 @@
-import { Role } from "@/constants/roles";
+import { Role } from "@/enums/role.enum";
 
 export interface IUserDetailsHeading {
   id: string;

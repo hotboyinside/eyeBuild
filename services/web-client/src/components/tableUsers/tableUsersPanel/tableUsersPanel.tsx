@@ -24,14 +24,20 @@ import {
   VideocameraIcon,
 } from "../../common";
 import Highlight from "react-highlight-words";
-import { getCapitalize, getInitials } from "@/helpers/utils";
-import { TableUsersPopover } from "../tableUsersPopover/tableUsersPopover";
+import { TableUsersPopover } from "../tableUsersPopover";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Page } from "@/constants/routes";
 import { ITableUsersPanel } from "./tableUsersPanel.types";
 import clsx from "clsx";
-import { formatPhone } from "@/helpers";
+import {
+  formatCapitalize,
+  formatInitials,
+  formatPhone,
+  generateUrl,
+} from "@/helpers";
+import { useCurrentUser } from "@/store/currentUser";
+import { isRoleHigher } from "@/helpers";
 
 const HEADERS = [
   { icon: UserIcon, label: "Name" },
@@ -50,19 +56,28 @@ export const TableUsersPanel = ({
   total,
   handleChangePage,
 }: ITableUsersPanel) => {
+  const { user } = useCurrentUser();
+
   const router = useRouter();
   const handleRowClick = useCallback(
-    (username: string) => router.push(`${Page.USERS}/${username}`),
-    [router]
+    (id: string) => {
+      if (user && user._id === id) {
+        return router.push(Page.PROFILE);
+      }
+      return router.push(generateUrl(Page.USER, { id }));
+    },
+    [router, user]
   );
   const isEmpty = users.length === 0;
   const isSearch = search.length !== 0;
   const isFew = users.length < 10;
+  const isUserHigherRole = user && isRoleHigher(user.role, role);
+
   return (
     <TableContainer className={styles.container}>
       <div className={styles.header}>
         <Title size='lg' weight='medium'>
-          {getCapitalize(role)}
+          {formatCapitalize(role)}
         </Title>
         <Badge severity='info' title={total.toString()} />
       </div>
@@ -78,7 +93,7 @@ export const TableUsersPanel = ({
                   </div>
                 </TableCell>
               ))}
-              <TableCell variant='head' component='th' />
+              {isUserHigherRole && <TableCell variant='head' component='th' />}
             </TableRow>
           </TableHead>
           <TableBody className={styles.body}>
@@ -120,7 +135,7 @@ export const TableUsersPanel = ({
                     <AvatarCard size='md' className={styles.avatarCard}>
                       <Avatar
                         variant='initials'
-                        initials={getInitials(row.fullName)}
+                        initials={formatInitials(row.fullName)}
                         size='md'
                       />
                       <AvatarLabel
@@ -150,7 +165,7 @@ export const TableUsersPanel = ({
                       className={styles.companyName}
                       highlightClassName={styles.highlight}
                       searchWords={[search]}
-                      textToHighlight={row.companyName || ""}
+                      textToHighlight={row.companyName || "No Company"}
                     />
                   </TableCell>
                   <TableCell>
@@ -174,11 +189,13 @@ export const TableUsersPanel = ({
                   <TableCell>
                     <div className={styles.cameras}>0</div>
                   </TableCell>
-                  <TableCell style={{ width: "3.25rem" }}>
-                    <div className={styles.popover}>
-                      <TableUsersPopover id={row._id || ""} />
-                    </div>
-                  </TableCell>
+                  {isUserHigherRole && (
+                    <TableCell style={{ width: "3.25rem" }}>
+                      <div className={styles.popover}>
+                        <TableUsersPopover id={row._id || ""} />
+                      </div>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             )}

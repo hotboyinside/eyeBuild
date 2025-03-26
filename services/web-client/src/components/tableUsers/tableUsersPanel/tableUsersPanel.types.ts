@@ -1,8 +1,9 @@
+import { Role } from "@/enums/role.enum";
 import { IUserBase } from "@/types/user";
 
 export interface ITableUsersPanel {
   users: IUserBase[];
-  role: "clients" | "admins";
+  role: Exclude<Role, Role.SUPERADMIN>;
   search: string;
   page: number;
   pages: number;

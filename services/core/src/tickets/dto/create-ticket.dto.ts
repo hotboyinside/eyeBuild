@@ -6,12 +6,12 @@ import {
   IsMongoId,
   IsOptional,
 } from 'class-validator';
-import { Status, Type } from 'src/common/enums/tickets.enum';
+import { TicketStatuses, TicketTypes } from 'src/common/enums/tickets.enum';
 
 export class CreateTicketDto {
   @IsNotEmpty()
-  @IsEnum(Type)
-  type: string;
+  @IsEnum(TicketTypes)
+  type: TicketTypes;
 
   @IsNotEmpty()
   @IsString()
@@ -22,8 +22,8 @@ export class CreateTicketDto {
   paymentId: string;
 
   @IsNotEmpty()
-  @IsEnum(Status)
-  status: Status;
+  @IsEnum(TicketStatuses)
+  status: TicketStatuses;
 
   @IsOptional()
   @IsDate()

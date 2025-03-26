@@ -7,14 +7,16 @@ import {
   Query,
   Delete,
   Put,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { Types } from 'mongoose';
 import { GetUsersDto } from './dto/get-users.dto';
 import { ALL_ADMINS } from 'src/common/enums/roles.enum';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { IRequest } from 'src/common/interfaces/request.interface';
 
 @Controller('users')
 export class UsersController {
@@ -22,8 +24,8 @@ export class UsersController {
 
   @Post()
   @Roles(...ALL_ADMINS)
-  async create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Req() req: IRequest, @Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(req.user, createUserDto);
   }
 
   @Get()
@@ -41,15 +43,16 @@ export class UsersController {
   @Put(':id')
   @Roles(...ALL_ADMINS)
   async update(
+    @Req() req: IRequest,
     @Param('id') id: Types.ObjectId,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.usersService.update(id, updateUserDto);
+    return this.usersService.update(req.user, id, updateUserDto);
   }
 
   @Delete(':id')
   @Roles(...ALL_ADMINS)
-  async delete(@Param('id') id: Types.ObjectId) {
-    return await this.usersService.delete(id);
+  async delete(@Req() req: IRequest, @Param('id') id: Types.ObjectId) {
+    return await this.usersService.delete(req.user, id);
   }
 }

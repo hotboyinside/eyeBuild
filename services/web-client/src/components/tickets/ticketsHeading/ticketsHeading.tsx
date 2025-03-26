@@ -2,12 +2,12 @@
 import { Heading, Title, Paragraph } from "@/components/common";
 
 export const TicketsHeading = () => {
-	return (
-		<div>
-			<Heading underline>
-				<Title tag='h1'>Tickets</Title>
-				<Paragraph>Track clients, cameras, tickets, and issues.</Paragraph>
-			</Heading>
-		</div>
-	);
+  return (
+    <Heading underline>
+      <Title tag='h1'>Tickets</Title>
+      <Paragraph>
+        View and manage user tickets related to their issues.
+      </Paragraph>
+    </Heading>
+  );
 };

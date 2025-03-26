@@ -1,4 +1,4 @@
-import { Role } from "@/constants/roles";
+import { Role } from "@/enums/role.enum";
 import {
   getTickets,
   ITicketUpdateRequest,
@@ -7,8 +7,8 @@ import {
 import {
   TicketsSortBy,
   TicketsOrder,
-  Status,
-} from "@/constants/tickets/tickets.enum";
+  TicketStatuses,
+} from "@/enums/tickets.enum";
 import { ITicketBase, ITicketTablePagination } from "@/types/ticket";
 import { create } from "zustand";
 
@@ -18,19 +18,19 @@ interface TicketStore {
   tickets: ITicketBase[];
   pagination: ITicketTablePagination;
   search: string;
-  status?: Status;
+  status?: TicketStatuses;
   role?: RoleTabs;
   fetchTickets: (
     role?: RoleTabs,
     search?: string,
-    status?: Status,
+    status?: TicketStatuses,
     page?: number
   ) => void;
   updateTicket: (id: string, ticketData: ITicketUpdateRequest) => Promise<void>;
   setRole: (role: RoleTabs) => void;
   setPage: (page: number) => void;
   setSearch: (search: string) => void;
-  setStatus: (status: Status) => void;
+  setStatus: (status: TicketStatuses) => void;
 }
 
 export const useTicketStore = create<TicketStore>((set, get) => ({
@@ -44,7 +44,7 @@ export const useTicketStore = create<TicketStore>((set, get) => ({
     sortBy: TicketsSortBy.CREATED_AT,
     order: TicketsOrder.ASC,
   },
-  status: Status.PENDING,
+  status: TicketStatuses.PENDING,
   search: "",
   fetchTickets: async (
     role = get().role,

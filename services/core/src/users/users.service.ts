@@ -1,4 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, PipelineStage, Types } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
@@ -7,9 +12,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { GetUsersDto } from './dto/get-users.dto';
 import { Role } from 'src/common/enums/roles.enum';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcryptjs';
 import {
   IAggregationResult,
   IFindAllUsersResponse,
+  IUser,
   SortOrder,
   UserSortBy,
 } from './interfaces/user.interface';
@@ -20,29 +27,31 @@ import {
   LASTNAMES,
 } from 'src/common/mockUsers';
 import { escapeRegExp, cleanNumber } from 'src/common/helpers/regex.helper';
+import { RoleService } from 'src/common/services/role.service';
+import { ErrorMessages } from 'src/common/enums/errors.enum';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private configService: ConfigService,
+    private roleService: RoleService,
   ) {}
 
-  // TODO: use roleHigher
-  async create(userData: CreateUserDto) {
+  async create(currentUser: IUser, userData: CreateUserDto) {
     const existingUser = await this.userModel.findOne({
       username: userData.username,
     });
-
     if (existingUser) {
       throw new ConflictException('Username is already taken');
     }
-
+    if (!this.roleService.isRoleHigher(currentUser.role, userData.role)) {
+      throw new ForbiddenException(ErrorMessages.USER_PERMISSION);
+    }
     const createdUser = new this.userModel(userData);
     return createdUser.save();
   }
 
-  // TODO: use roleHigher
   async findAll(params: GetUsersDto): Promise<IFindAllUsersResponse> {
     const {
       role,
@@ -120,23 +129,37 @@ export class UsersService {
     };
   }
 
-  // TODO: use roleHigher
   async findOne(id: Types.ObjectId) {
     return this.userModel.findOne({ _id: id }).exec();
   }
 
-  // TODO: use roleHigher
-  async update(id: Types.ObjectId, updateUserDto: UpdateUserDto) {
-    const user = await this.userModel
-      .findByIdAndUpdate(id, updateUserDto, { new: true })
-      .exec();
-    return user;
+  async update(
+    currentUser: IUser,
+    id: Types.ObjectId,
+    updateUserDto: UpdateUserDto,
+  ) {
+    const userToUpdate = await this.userModel.findById(id);
+    if (!userToUpdate) {
+      throw new NotFoundException('User not found');
+    }
+    if (!this.roleService.isRoleHigher(currentUser.role, userToUpdate.role)) {
+      throw new ForbiddenException(ErrorMessages.USER_PERMISSION);
+    }
+    Object.assign(userToUpdate, updateUserDto);
+    const updatedUser = await userToUpdate.save();
+    return updatedUser;
   }
 
-  // TODO: use roleHigher
-  async delete(id: Types.ObjectId) {
-    const deletedUser = await this.userModel.findByIdAndDelete(id).exec();
-    return deletedUser;
+  async delete(currentUser: IUser, id: Types.ObjectId) {
+    const userToDelete = await this.userModel.findById(id);
+    if (!userToDelete) {
+      throw new NotFoundException('User not found');
+    }
+    if (!this.roleService.isRoleHigher(currentUser.role, userToDelete.role)) {
+      throw new ForbiddenException(ErrorMessages.USER_PERMISSION);
+    }
+    await userToDelete.deleteOne();
+    return userToDelete;
   }
 
   async findByUsername(username: string) {
@@ -160,7 +183,7 @@ export class UsersService {
   }
 
   async createMockUsers() {
-    const roles = [Role.CLIENT, Role.ADMIN];
+    const roles = [Role.CLIENT, Role.ADMIN, Role.FRANCHISEE];
     interface IMockUser {
       username: string;
       email: string;
@@ -172,13 +195,15 @@ export class UsersService {
       role: Role;
     }
     const mockUsers: IMockUser[] = [];
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash('asd123qwe', saltRounds);
 
     for (let i = 0; i < 120; i++) {
       const role = roles[Math.floor(Math.random() * roles.length)];
       const user = {
-        username: `${FIRSTNAMES[Math.floor(Math.random() * FIRSTNAMES.length)].toLowerCase()}${LASTNAMES[Math.floor(Math.random() * LASTNAMES.length)].toLowerCase()}`,
+        username: `${FIRSTNAMES[Math.floor(Math.random() * FIRSTNAMES.length)].toLowerCase()}${LASTNAMES[Math.floor(Math.random() * LASTNAMES.length)].toLowerCase() + Math.floor(Math.random() * 1000)}`,
         email: `${FIRSTNAMES[Math.floor(Math.random() * FIRSTNAMES.length)].toLowerCase()}@${DOMAINS[Math.floor(Math.random() * DOMAINS.length)]}`,
-        password: 'asd123qwe',
+        password: hashedPassword,
         phone: `199${String(Math.floor(Math.random() * 100000000)).padStart(8, '0')}`,
         companyName: COMPANIES[Math.floor(Math.random() * COMPANIES.length)],
         fullName: `${FIRSTNAMES[Math.floor(Math.random() * FIRSTNAMES.length)]} ${LASTNAMES[Math.floor(Math.random() * LASTNAMES.length)]}`,

@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import request from "./request";
 import { UserFormValues } from "@/schemas";
 import { IUserBase } from "@/types/user";
-import { Role } from "@/constants/roles";
+import { Role } from "@/enums/role.enum";
 import {
   IUserTablePagination,
   SortOrder,
@@ -65,7 +65,7 @@ export const updateUser = async (
 };
 
 interface IUsersRequest {
-  role?: Role.CLIENT | Role.ADMIN;
+  role?: Role.CLIENT | Role.ADMIN | Role.FRANCHISEE;
   page?: number;
   limit?: number;
   search?: string;

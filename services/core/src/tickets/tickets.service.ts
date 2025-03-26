@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 import { Model, PipelineStage, Types } from 'mongoose';
@@ -6,24 +6,29 @@ import { Ticket } from './schemas/ticket.schema';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { GetTicketsDto } from './dto/get-tickets.dto';
 import {
-  Status,
+  TicketStatuses,
+  TicketTypes,
   TicketsOrder,
   TicketsSortBy,
 } from 'src/common/enums/tickets.enum';
 import { FilterQuery } from 'mongoose';
 import {
   IAllTicketsResponse,
-  IFilter,
-  ITicketsAfterAggregation,
+  ITicketFilter,
+  ITicketsResult,
 } from './interfaces/ticket.interface';
 import { Role } from 'src/common/enums/roles.enum';
 import { UpdateTicketsDto } from './dto/update-ticket.dto';
+import { ErrorMessages } from 'src/common/enums/errors.enum';
+import { UsersService } from 'src/users/users.service';
+import { SortOrder, UserSortBy } from 'src/users/interfaces/user.interface';
 
 @Injectable()
 export class TicketsService {
   constructor(
     @InjectModel(Ticket.name) private ticketModel: Model<Ticket>,
     private configService: ConfigService,
+    private readonly usersService: UsersService,
   ) {}
 
   async findAll(params: GetTicketsDto): Promise<IAllTicketsResponse> {
@@ -36,7 +41,7 @@ export class TicketsService {
       sortBy = TicketsSortBy.CREATED_AT,
     } = params;
 
-    const filter: FilterQuery<IFilter> = {};
+    const filter: FilterQuery<ITicketFilter> = {};
 
     if (role === Role.ADMIN) {
       filter.role = { $in: [Role.ADMIN, Role.SUPERADMIN] };
@@ -87,7 +92,7 @@ export class TicketsService {
           ],
           totalCount: [{ $match: filter }, { $count: 'count' }],
           totalPendingTickets: [
-            { $match: { status: Status.PENDING } },
+            { $match: { status: TicketStatuses.PENDING } },
             { $count: 'count' },
           ],
         },
@@ -96,7 +101,7 @@ export class TicketsService {
 
     const result = (await this.ticketModel
       .aggregate(aggregationPipeline)
-      .exec()) as ITicketsAfterAggregation[];
+      .exec()) as ITicketsResult[];
     const tickets = result[0].tickets;
     const totalPendingTickets = result[0].totalPendingTickets[0]?.count || 0;
     const total = result[0].totalCount[0]?.count || 0;
@@ -117,7 +122,16 @@ export class TicketsService {
   }
 
   async findOne(id: Types.ObjectId) {
-    return this.ticketModel.findOne({ _id: id }).exec();
+    const existedUser = await this.ticketModel.findOne({ _id: id }).exec();
+    if (!existedUser) {
+      throw new NotFoundException(
+        ErrorMessages.NOT_FOUND_TICKET_WITH_ID.replace(
+          '{ticketId}',
+          id.toString(),
+        ),
+      );
+    }
+    return existedUser;
   }
 
   async create(ticketData: CreateTicketDto) {
@@ -130,7 +144,7 @@ export class TicketsService {
     ticketData: UpdateTicketsDto,
   ): Promise<Ticket> {
     const updatedFields =
-      ticketData.status === Status.CLOSED
+      ticketData.status === TicketStatuses.CLOSED
         ? {
             ...ticketData,
             closedDate: Date.now(),
@@ -142,7 +156,12 @@ export class TicketsService {
       .exec();
 
     if (!updatedTicket) {
-      throw new Error('Ticket is not found');
+      throw new NotFoundException(
+        ErrorMessages.NOT_FOUND_TICKET_WITH_ID.replace(
+          '{ticketId}',
+          ticketId.toString(),
+        ),
+      );
     }
 
     return updatedTicket;
@@ -152,6 +171,15 @@ export class TicketsService {
     const deletedUser = await this.ticketModel
       .findByIdAndDelete(ticketId)
       .exec();
+
+    if (!deletedUser) {
+      throw new NotFoundException(
+        ErrorMessages.NOT_FOUND_TICKET_WITH_ID.replace(
+          '{ticketId}',
+          ticketId.toString(),
+        ),
+      );
+    }
     return deletedUser;
   }
 
@@ -162,5 +190,46 @@ export class TicketsService {
     } catch (error) {
       console.error('Error clearing user collection:', error);
     }
+  }
+
+  async createMockTickets() {
+    const users = await this.usersService.findAll({
+      page: 1,
+      limit: 20,
+      sortBy: UserSortBy.CREATED_AT,
+      order: SortOrder.ASC,
+    });
+
+    const existedUsers = users.users;
+
+    const types = [
+      TicketTypes.ACCOUNT_SUPPORT,
+      TicketTypes.PAYMENT,
+      TicketTypes.TROUBLESHOOTING,
+    ];
+    interface IMockTicket {
+      reason: string;
+      userId: string;
+      type: TicketTypes;
+      status: TicketStatuses;
+    }
+    const mockTickets: IMockTicket[] = [];
+
+    for (let i = 0; i < 10; i++) {
+      const randomUser =
+        existedUsers[Math.floor(Math.random() * existedUsers.length)];
+      const randomType = types[Math.floor(Math.random() * types.length)];
+
+      const ticket = {
+        reason: `Reason for ticket ${i + 1}`,
+        userId: randomUser._id.toString(),
+        type: randomType,
+        status: TicketStatuses.PENDING,
+      };
+
+      mockTickets.push(ticket);
+    }
+
+    await this.ticketModel.insertMany(mockTickets);
   }
 }

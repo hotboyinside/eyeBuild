@@ -1,9 +1,9 @@
 import {
-  Status,
+  TicketStatuses,
   TicketsOrder,
   TicketsSortBy,
-  Type,
-} from "@/constants/tickets/tickets.enum";
+  TicketTypes,
+} from "@/enums/tickets.enum";
 
 export interface ITicketBase {
   _id: string;
@@ -12,8 +12,8 @@ export interface ITicketBase {
   email: string;
   companyName: string;
   fullName: string;
-  type: Type;
-  status: Status;
+  type: TicketTypes;
+  status: TicketStatuses;
   reason: string;
   createdAt: string;
   closedDate?: string;

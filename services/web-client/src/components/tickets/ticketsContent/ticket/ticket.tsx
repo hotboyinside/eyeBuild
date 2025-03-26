@@ -2,21 +2,20 @@
 
 import { Paragraph, Title, Badge, Avatar, Button } from "@/components/common";
 import { ITicketBase } from "@/types/ticket";
-import { getInitials } from "@/helpers/utils";
+import { formatInitials } from "@/helpers";
 import { parseISO, format } from "date-fns";
 
 import styles from "./ticket.module.scss";
-import { Status, Type } from "@/constants/tickets/tickets.enum";
-import { DownloadIcon } from "@/components/common/icons/svg/downloadIcon";
-import { LinkIcon } from "@/components/common/icons/svg/linkIcon";
+import { TicketStatuses, TicketTypes } from "@/enums/tickets.enum";
+import { ArchiveDownIcon, ArrowRightUpIcon } from "@/components/common";
 
-const getBadgeSeverity = (type: Type) => {
+const getBadgeSeverity = (type: TicketTypes) => {
   switch (type) {
-    case Type.PAYMENT:
+    case TicketTypes.PAYMENT:
       return "success";
-    case Type.TROUBLESHOOTING:
+    case TicketTypes.TROUBLESHOOTING:
       return "warning";
-    case Type.ACCOUNT_SUPPORT:
+    case TicketTypes.ACCOUNT_SUPPORT:
       return "brand";
   }
 };
@@ -34,13 +33,13 @@ export const Ticket = ({
   onCloseTicketClick,
 }: {
   ticketData: ITicketBase;
-  onCloseTicketClick: (id: string, status: Status) => void;
+  onCloseTicketClick: (id: string, status: TicketStatuses) => void;
 }) => {
-  const isPendingTicket = ticketData.status === Status.PENDING;
-  const ticketTitle = `Ticket #${ticketData._id.substring(0, 7)}`;
+  const isPendingTicket = ticketData.status === TicketStatuses.PENDING;
+  const ticketTitle = `Ticket #${ticketData._id.substring(17, 24)}`;
   const ticketFormattedCreateDate = getFormattedDate(ticketData.createdAt);
   const ticketFormattedClosedDate = getFormattedDate(ticketData?.closedDate);
-  const initials = getInitials(ticketData.fullName);
+  const initials = formatInitials(ticketData.fullName);
 
   return (
     <div className={styles.root}>
@@ -82,9 +81,11 @@ export const Ticket = ({
             noOutline
             noBackground
             type='button'
-            startIcon={<DownloadIcon />}
+            startIcon={<ArchiveDownIcon className={styles.startIcon} />}
             className={styles.extraButton}
-            onClick={() => onCloseTicketClick(ticketData._id, Status.CLOSED)}
+            onClick={() =>
+              onCloseTicketClick(ticketData._id, TicketStatuses.CLOSED)
+            }
           >
             Close ticket
           </Button>
@@ -104,7 +105,7 @@ export const Ticket = ({
           noOutline
           noBackground
           type='button'
-          startIcon={<LinkIcon />}
+          startIcon={<ArrowRightUpIcon className={styles.startIcon} />}
           className={styles.extraButton}
         >
           Open chat

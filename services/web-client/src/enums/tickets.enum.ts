@@ -1,9 +1,9 @@
-export enum Status {
+export enum TicketStatuses {
   PENDING = "Pending",
   CLOSED = "Closed",
 }
 
-export enum Type {
+export enum TicketTypes {
   ACCOUNT_SUPPORT = "Account Support",
   TROUBLESHOOTING = "Troubleshooting",
   PAYMENT = "Payment",

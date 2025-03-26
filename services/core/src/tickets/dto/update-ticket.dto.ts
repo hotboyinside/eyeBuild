@@ -1,14 +1,14 @@
 import { IsOptional, IsEnum, IsString } from 'class-validator';
-import { Status, Type } from 'src/common/enums/tickets.enum';
+import { TicketStatuses, TicketTypes } from 'src/common/enums/tickets.enum';
 
 export class UpdateTicketsDto {
   @IsOptional()
-  @IsEnum(Type)
-  type: Type;
+  @IsEnum(TicketTypes)
+  type: TicketTypes;
 
   @IsOptional()
-  @IsEnum(Status)
-  status: Status;
+  @IsEnum(TicketStatuses)
+  status: TicketStatuses;
 
   @IsOptional()
   @IsString()

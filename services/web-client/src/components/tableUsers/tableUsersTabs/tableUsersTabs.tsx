@@ -14,10 +14,13 @@ import {
 import { TableUsersPanel } from "../tableUsersPanel/tableUsersPanel";
 import Link from "next/link";
 import { useEffect } from "react";
-import { Role } from "@/constants/roles";
+import { Role } from "@/enums/role.enum";
 import { debounce } from "lodash";
-import { useUserStore } from "@/store/user";
+import { RoleTabs, useUserStore } from "@/store/user";
 import { DEBOUNCE_MS } from "@/constants/lodash";
+import { formatRole } from "@/helpers";
+
+const roles: RoleTabs[] = [Role.CLIENT, Role.FRANCHISEE, Role.ADMIN];
 
 export const TableUsersTabs = () => {
   const {
@@ -36,10 +39,6 @@ export const TableUsersTabs = () => {
     fetchUsers();
   }, [fetchUsers]);
 
-  const handleTabChange = (index: number) => {
-    setRole(index === 0 ? Role.CLIENT : Role.ADMIN);
-  };
-
   const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   }, DEBOUNCE_MS);
@@ -50,17 +49,16 @@ export const TableUsersTabs = () => {
       aria-label="tem"
       variant="outlined"
       size="md"
-      onChange={handleTabChange}
-      value={role === Role.CLIENT ? 0 : 1}
+      onChange={(index) => setRole(roles[index])}
+      value={roles.indexOf(role)}
     >
       <header className={styles.header}>
         <TabList>
-          <Tab aria-label="Clients" index={0}>
-            Clients
-          </Tab>
-          <Tab aria-label="Admins" index={1}>
-            Admins
-          </Tab>
+          {roles.map((role, index) => (
+            <Tab key={role} aria-label={role} index={index}>
+              {formatRole(role)}
+            </Tab>
+          ))}
         </TabList>
         <div className={styles.right}>
           <Input
@@ -82,28 +80,19 @@ export const TableUsersTabs = () => {
           </Link>
         </div>
       </header>
-      <TabPanel index={0}>
-        <TableUsersPanel
-          users={users || []}
-          role="clients"
-          search={search}
-          page={page}
-          total={total}
-          pages={pages}
-          handleChangePage={setPage}
-        />
-      </TabPanel>
-      <TabPanel index={1}>
-        <TableUsersPanel
-          users={users || []}
-          role="admins"
-          search={search}
-          page={page}
-          total={total}
-          pages={pages}
-          handleChangePage={setPage}
-        />
-      </TabPanel>
+      {roles.map((role, index) => (
+        <TabPanel key={role} index={index}>
+          <TableUsersPanel
+            users={users || []}
+            role={role}
+            search={search}
+            page={page}
+            total={total}
+            pages={pages}
+            handleChangePage={setPage}
+          />
+        </TabPanel>
+      ))}
     </Tabs>
   );
 };

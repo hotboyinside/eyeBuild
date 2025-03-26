@@ -1,14 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
-import { Type, Status } from 'src/common/enums/tickets.enum';
+import { TicketTypes, TicketStatuses } from 'src/common/enums/tickets.enum';
 import { User } from '../../users/schemas/user.schema';
 
 export type TicketDocument = HydratedDocument<Ticket>;
 
 @Schema({ timestamps: true })
 export class Ticket {
-  @Prop({ required: true, enum: Type })
-  type: Type;
+  @Prop({ required: true, enum: TicketTypes })
+  type: TicketTypes;
 
   @Prop({ required: true })
   reason: string;
@@ -16,8 +16,8 @@ export class Ticket {
   @Prop()
   paymentId: string;
 
-  @Prop({ required: true, enum: Status })
-  status: Status;
+  @Prop({ required: true, enum: TicketStatuses })
+  status: TicketStatuses;
 
   @Prop({ type: Date, default: null })
   closedDate: Date;

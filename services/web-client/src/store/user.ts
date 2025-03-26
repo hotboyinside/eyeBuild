@@ -1,4 +1,4 @@
-import { Role } from "@/constants/roles";
+import { Role } from "@/enums/role.enum";
 import { getUsers } from "@/services/user.service";
 import {
   IUserTablePagination,
@@ -8,7 +8,7 @@ import {
 import { IUserBase } from "@/types/user";
 import { create } from "zustand";
 
-type RoleTabs = Role.ADMIN | Role.CLIENT;
+export type RoleTabs = Exclude<Role, Role.SUPERADMIN>;
 
 interface UserStore {
   users: IUserBase[];

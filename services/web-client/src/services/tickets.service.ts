@@ -1,16 +1,17 @@
 import request from "./request";
 import { AxiosResponse } from "axios";
-import { Role } from "@/constants/roles";
+import { Role } from "@/enums/role.enum";
 import {
-  Status,
+  TicketStatuses,
   TicketsOrder,
   TicketsSortBy,
-  Type,
-} from "@/constants/tickets/tickets.enum";
+  TicketTypes,
+} from "@/enums/tickets.enum";
 import { ITicketBase, ITicketTablePagination } from "@/types/ticket";
+import { BASE_TICKETS_URL } from "@/constants/apiRoutes";
 
 interface ITicketRequest {
-  status?: Status;
+  status?: TicketStatuses;
   role?: Role.CLIENT | Role.ADMIN;
   page?: number;
   limit?: number;
@@ -20,8 +21,8 @@ interface ITicketRequest {
 }
 
 export interface ITicketUpdateRequest {
-  type?: Type;
-  status?: Status;
+  type?: TicketTypes;
+  status?: TicketStatuses;
   reason?: string;
 }
 
@@ -41,12 +42,7 @@ export const getTickets = async (
     const { data } = await request.get<
       ITicketRequest,
       AxiosResponse<ITicketsResponse>
-    >("/tickets/", { params });
-
-    if (!data || !data.tickets) {
-      console.warn("Invalid get tickets response:", data);
-      return { tickets: [] };
-    }
+    >(BASE_TICKETS_URL, { params });
     return data;
   } catch (error) {
     console.error("Get tickets error:", error);
@@ -62,12 +58,8 @@ export const updateTicket = async (
     const { data } = await request.put<
       ITicketRequest,
       AxiosResponse<ITicketsUpdateResponse>
-    >(`/tickets/${id}`, ticketData);
+    >(`${BASE_TICKETS_URL}${id}`, ticketData);
 
-    if (!data || !data.ticket) {
-      console.warn("Invalid update ticket response:", data);
-      return { ticket: undefined };
-    }
     return data;
   } catch (error) {
     console.error("Update ticket error:", error);

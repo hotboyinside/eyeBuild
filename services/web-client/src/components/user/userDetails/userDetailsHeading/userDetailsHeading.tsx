@@ -12,13 +12,14 @@ import {
   Title,
 } from "@/components/common";
 import { Page } from "@/constants/routes";
-import { getCapitalize } from "@/helpers/utils";
 import Link from "next/link";
 import { IUserDetailsHeading } from "./userDetailsHeading.types";
 import { Sizes } from "@/enums/size.enum";
-import { Role } from "@/constants/roles";
-import { generateUrl } from "@/helpers";
+import { Role } from "@/enums/role.enum";
+import { formatCapitalize, generateUrl } from "@/helpers";
 import { Severity } from "@/enums/severity.enum";
+import { useCurrentUser } from "@/store/currentUser";
+import { isRoleHigher } from "@/helpers";
 
 const getHeadingProps = (role: Role): IHeading => {
   const props: IHeading = {
@@ -43,7 +44,7 @@ const getBadgeProps = (role: Role): IBadge => {
   return {
     severity,
     size: Sizes.LG,
-    title: getCapitalize(role),
+    title: formatCapitalize(role),
   };
 };
 
@@ -52,6 +53,9 @@ export const UserDetailsHeading = ({
   fullName,
   role,
 }: IUserDetailsHeading) => {
+  const { user } = useCurrentUser();
+  const hasPermission = user && isRoleHigher(user.role, role);
+
   const editPageUrl = generateUrl(Page.EDIT_USER, { id });
   const badgeProps = getBadgeProps(role);
   const headingProps = getHeadingProps(role);
@@ -77,34 +81,36 @@ export const UserDetailsHeading = ({
           </Title>
           <Badge {...badgeProps} />
         </div>
-        <div className={styles.titleActions}>
-          <Button
-            color="inherit"
-            size={Sizes.MD}
-            noBackground
-            startIcon={<BlockIcon size={Sizes.LG} />}
-          >
-            Block
-          </Button>
-          <Button
-            color="neutral"
-            size={Sizes.MD}
-            variant="outlined"
-            startIcon={<EyeIcon size={Sizes.LG} />}
-          >
-            Access
-          </Button>
-          <Link href={editPageUrl}>
+        {hasPermission && (
+          <div className={styles.titleActions}>
+            <Button
+              color="inherit"
+              size={Sizes.MD}
+              noBackground
+              startIcon={<BlockIcon size={Sizes.LG} />}
+            >
+              Block
+            </Button>
             <Button
               color="neutral"
               size={Sizes.MD}
               variant="outlined"
-              startIcon={<EditIcon size={Sizes.LG} />}
+              startIcon={<EyeIcon size={Sizes.LG} />}
             >
-              Edit
+              Access
             </Button>
-          </Link>
-        </div>
+            <Link href={editPageUrl}>
+              <Button
+                color="neutral"
+                size={Sizes.MD}
+                variant="outlined"
+                startIcon={<EditIcon size={Sizes.LG} />}
+              >
+                Edit
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </Heading>
   );

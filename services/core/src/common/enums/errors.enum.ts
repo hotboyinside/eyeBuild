@@ -23,4 +23,8 @@ export enum ErrorMessages {
 
   REQUIRED_EMAIL = 'Enter an email address.',
   INVALID_EMAIL = 'Enter a valid email address.',
+
+  USER_PERMISSION = 'You do not have permission to perform this action on a user with this role.',
+
+  NOT_FOUND_TICKET_WITH_ID = `Ticket with ID {ticketId} not found.`,
 }

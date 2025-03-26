@@ -1,4 +1,4 @@
-import { Role } from "./roles";
+import { Role } from "../enums/role.enum";
 
 export enum Page {
   DASHBOARD = "/dashboard",

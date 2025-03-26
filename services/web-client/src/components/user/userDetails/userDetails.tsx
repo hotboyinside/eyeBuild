@@ -1,5 +1,5 @@
 import { UserDetailsHeading } from "./userDetailsHeading";
-import { Role } from "@/constants/roles";
+import { Role } from "@/enums/role.enum";
 import { UserDetailsTabs } from "./userDetailsTabs";
 import { UserDetailsContent } from "./userDetailsContent";
 import { IUserDetails } from "./userDetails.types";

@@ -1,13 +1,17 @@
 import { IsOptional, IsEnum, IsInt, Min, Max, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { Status, TicketsOrder, Type } from 'src/common/enums/tickets.enum';
+import {
+  TicketStatuses,
+  TicketsOrder,
+  TicketTypes,
+} from 'src/common/enums/tickets.enum';
 import { TicketsSortBy } from '../../common/enums/tickets.enum';
 import { Role } from 'src/common/enums/roles.enum';
 
 export class GetTicketsDto {
   @IsOptional()
-  @IsEnum(Status)
-  status?: Status;
+  @IsEnum(TicketStatuses)
+  status?: TicketStatuses;
 
   @IsOptional()
   @IsEnum(Role)
@@ -31,8 +35,8 @@ export class GetTicketsDto {
   search?: string;
 
   @IsOptional()
-  @IsEnum(Type)
-  type: Type;
+  @IsEnum(TicketTypes)
+  type: TicketTypes;
 
   @IsOptional()
   @IsEnum(TicketsSortBy)

@@ -11,6 +11,7 @@ import {
 } from "../../common";
 import { Page } from "@/constants/routes";
 import { ITableUsersPopover } from "./tableUsersPopover.types";
+import { generateUrl } from "@/helpers";
 
 export const TableUsersPopover = ({ id }: ITableUsersPopover) => {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,8 @@ export const TableUsersPopover = ({ id }: ITableUsersPopover) => {
   const handleClose = useCallback(() => {
     setOpen(false);
   }, []);
-  const editLink = `${Page.USERS}/${id}/edit`;
+  const editPageUrl = generateUrl(Page.EDIT_USER, { id });
+
   return (
     <>
       <Button
@@ -50,7 +52,7 @@ export const TableUsersPopover = ({ id }: ITableUsersPopover) => {
         }}
       >
         <ul className={styles.list}>
-          <Link href={editLink} passHref>
+          <Link href={editPageUrl} passHref>
             <li className={styles.item}>
               <EditIcon className={styles.icon} size="md" />
               Edit user

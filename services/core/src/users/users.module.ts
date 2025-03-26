@@ -6,6 +6,7 @@ import { UsersController } from './users.controller';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from 'src/auth/auth.module';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { RoleService } from 'src/common/services/role.service';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [UsersController],
-  providers: [UsersService, AuthGuard],
+  providers: [UsersService, AuthGuard, RoleService],
   exports: [UsersService],
 })
 export class UsersModule {}

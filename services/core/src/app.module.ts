@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { getConfigData } from './common/utils/config.util';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/guards/auth.guard';
-import { RolesGuard } from './auth/guards/roles.guard';
+import { RolesGuard } from './common/guards/roles.guard';
 import { TicketsModule } from './tickets/tickets.module';
 import { TicketsService } from './tickets/tickets.service';
 
@@ -31,23 +31,27 @@ import { TicketsService } from './tickets/tickets.service';
   controllers: [AppController],
   providers: [
     AppService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard,
-    // },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
   ],
 })
 export class AppModule {
-  constructor(private readonly usersService: TicketsService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly ticketsService: TicketsService,
+  ) {}
 
   async onModuleInit() {
-    // await this.usersService.clearDatabase();
     await this.usersService.clearDatabase();
-    // await this.usersService.createSuperAdminIfNotExists();
-    // await this.usersService.createMockUsers();
+    await this.ticketsService.clearDatabase();
+    await this.usersService.createSuperAdminIfNotExists();
+    await this.usersService.createMockUsers();
+    await this.ticketsService.createMockTickets();
   }
 }

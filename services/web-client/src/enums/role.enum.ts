@@ -1,8 +1,8 @@
 export enum Role {
-  CLIENT = 'client',
-  FRANCHISEE = 'franchisee',
-  ADMIN = 'admin',
-  SUPERADMIN = 'superadmin',
+  SUPERADMIN = "superadmin",
+  ADMIN = "admin",
+  FRANCHISEE = "franchisee",
+  CLIENT = "client",
 }
 
 export const RoleHierarchy = {
@@ -12,6 +12,7 @@ export const RoleHierarchy = {
   [Role.SUPERADMIN]: 3,
 } as const;
 
+export const REGULAR_USERS: Role[] = [Role.ADMIN, Role.FRANCHISEE, Role.CLIENT];
 export const ALL_ADMINS: Role[] = [
   Role.SUPERADMIN,
   Role.ADMIN,

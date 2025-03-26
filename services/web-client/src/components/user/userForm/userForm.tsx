@@ -21,12 +21,11 @@ import {
 import { useHookFormMask } from "use-mask-input";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
-import { cleanNumber } from "@/helpers";
+import { cleanNumber, formatCapitalize } from "@/helpers";
 import { addUser, updateUser } from "@/services/user.service";
 import { Severity } from "@/enums/severity.enum";
 import { Page } from "@/constants/routes";
-import { REGULAR_USERS } from "@/constants/roles";
-import { getCapitalize } from "@/helpers/utils";
+import { REGULAR_USERS, Role } from "@/enums/role.enum";
 import { UserFormHeading } from "./userFormHeading";
 import { useParams } from "next/navigation";
 import { UserFormSection } from "./userFormSection";
@@ -34,15 +33,20 @@ import { Sizes } from "@/enums/size.enum";
 import { ErrorMessages } from "@/enums/error-messages.enum";
 import { isAxiosError } from "axios";
 import { HttpStatus } from "@/enums/https-status.enum";
+import { isRoleHigher } from "@/helpers";
+import { useCurrentUser } from "@/store/currentUser";
+import { useUserStore } from "@/store/user";
 
 export const UserForm = ({ mode, defaultValues }: IUserForm) => {
   const isEditMode = mode === "edit";
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
+  const { user } = useCurrentUser();
+  const { setRole } = useUserStore();
 
   const formattedDefaultValues = {
     ...defaultValues,
-    role: getCapitalize(defaultValues?.role || ""),
+    role: formatCapitalize(defaultValues?.role || ""),
   };
 
   const {
@@ -87,6 +91,10 @@ export const UserForm = ({ mode, defaultValues }: IUserForm) => {
 
       if (!result) throw new Error("Invalid add user response");
 
+      if (result.role && result.role !== Role.SUPERADMIN) {
+        setRole(result.role);
+      }
+
       setDetailedError({});
       router.push(Page.USERS);
       showToast({
@@ -115,14 +123,16 @@ export const UserForm = ({ mode, defaultValues }: IUserForm) => {
     formRef.current.requestSubmit();
   };
 
-  const memoizedRoles = useMemo(
-    () =>
-      REGULAR_USERS.map((role) => ({
-        value: getCapitalize(role),
+  const memoizedRoles = useMemo(() => {
+    if (!user) return [];
+
+    return REGULAR_USERS.filter((role) => isRoleHigher(user.role, role)).map(
+      (role) => ({
+        value: formatCapitalize(role),
         icon: <DotIcon size={Sizes.LG} className={styles[`${role}Icon`]} />,
-      })),
-    []
-  );
+      })
+    );
+  }, [user]);
 
   const isFormInvalid = () => {
     const hasErrors = Object.values(errors).length > 0;

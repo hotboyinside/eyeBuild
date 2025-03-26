@@ -8,13 +8,13 @@ import clsx from "clsx";
 import { useCurrentUser } from "@/store/currentUser";
 import { useTicketStore } from "@/store/ticket";
 import { Badge } from "@/components/common";
-import { getCountTicketsForShowing } from "@/helpers/utils";
+import { formatCountTicketsForShowing } from "@/helpers/format.helper";
 
 export const SidebarNavMenu = ({ className, collapsed }: ISidebarNavMenu) => {
   const { user } = useCurrentUser();
   const pathname = usePathname();
   const { pagination } = useTicketStore();
-  const pendingTicketsCount = getCountTicketsForShowing(
+  const pendingTicketsCount = formatCountTicketsForShowing(
     pagination.totalPendingTickets
   );
 

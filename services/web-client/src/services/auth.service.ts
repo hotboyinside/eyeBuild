@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../constants/config";
 import { IUserBase } from "@/types/user";
-import { IRoleValuesUnion } from "../constants/roles";
+import { Role } from "../enums/role.enum";
 
 interface ILoginRequest {
   username: string;
@@ -45,10 +45,7 @@ export const logout = async () => {
   }
 };
 
-export const verifyToken = (
-  token: string,
-  secretKey: string
-): IRoleValuesUnion | false => {
+export const verifyToken = (token: string, secretKey: string): Role | false => {
   if (!token) return false;
   try {
     const unparsedToken = cookieParser.signedCookie(token, config.cookieSecret);
@@ -75,7 +72,7 @@ const generateRouteRegex = (route: string): RegExp => {
   return new RegExp(regexString);
 };
 
-export const verifyRole = (role: IRoleValuesUnion, path: string): boolean => {
+export const verifyRole = (role: Role, path: string): boolean => {
   if (roleRoutes[role]?.includes(path as Page)) {
     return true;
   }
