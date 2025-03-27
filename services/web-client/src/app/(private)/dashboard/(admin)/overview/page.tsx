@@ -1,17 +1,15 @@
+import styles from "./page.module.scss";
 import {
   Grid,
   Heading,
   Paragraph,
   Title,
-  UsersIcon,
-  MetricItem,
+  MiniStatCard,
+  MetricContainer,
+  AlertCard,
+  TicketCard,
 } from "@/components/common";
-
-const metrics = [
-  { title: "Total Customers", value: "2,420", icon: <UsersIcon size="lg" /> },
-  { title: "Total Customers", value: "2,420", icon: <UsersIcon size="lg" /> },
-  { title: "Total Customers", value: "2,420", icon: <UsersIcon size="lg" /> },
-];
+import { ALERTS, METRICS, TICKETS } from "./mockData";
 
 export default function Overview() {
   return (
@@ -20,12 +18,32 @@ export default function Overview() {
         <Title tag="h1">Overview</Title>
         <Paragraph>Track clients, cameras, tickets, and issues.</Paragraph>
       </Heading>
+
       <Grid container spacing={5}>
-        {metrics.map((metric, index) => (
+        {METRICS.map((metric, index) => (
           <Grid key={index} size={4}>
-            <MetricItem {...metric} fullWidth />
+            <MiniStatCard {...metric} fullWidth />
           </Grid>
         ))}
+
+        <Grid key={"Recent alerts"} size={6}>
+          <MetricContainer title="Recent alerts" total={1} link="/">
+            <div className={styles.alerts}>
+              {ALERTS.map((alert, index) => (
+                <AlertCard key={index} {...alert} />
+              ))}
+            </div>
+          </MetricContainer>
+        </Grid>
+        <Grid key={"Pending tickets"} size={6}>
+          <MetricContainer title="Pending tickets" total={8} link="/">
+            <div className={styles.tickets}>
+              {TICKETS.map((ticket, index) => (
+                <TicketCard key={index} {...ticket} />
+              ))}
+            </div>
+          </MetricContainer>
+        </Grid>
       </Grid>
     </div>
   );

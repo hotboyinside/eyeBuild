@@ -22,6 +22,7 @@ interface ITicketCardsProps {
   total: number;
   search?: string;
   handleChangePage: (page: number) => void;
+  onOpenTicketCLick: (id: string) => void;
   onCloseTicketClick: (id: string, status: TicketStatuses) => void;
 }
 
@@ -31,6 +32,7 @@ export const TicketCards = ({
   pages,
   page,
   handleChangePage,
+  onOpenTicketCLick,
   onCloseTicketClick,
 }: ITicketCardsProps) => {
   const filteredTickets = useMemo(
@@ -78,6 +80,7 @@ export const TicketCards = ({
             <Ticket
               key={ticket._id}
               ticketData={ticket}
+              onOpenTicketCLick={onOpenTicketCLick}
               onCloseTicketClick={onCloseTicketClick}
             />
           ))}

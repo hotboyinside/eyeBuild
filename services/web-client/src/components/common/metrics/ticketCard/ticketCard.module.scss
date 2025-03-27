@@ -1,0 +1,41 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/mixins" as *;
+
+.card {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.title {
+  @include truncate(1);
+  font-weight: 600;
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+  color: $gray-900;
+}
+
+.content {
+  flex-grow: 1;
+  color: $gray-600;
+  font-weight: 400;
+  font-size: $font-size-text-sm;
+  line-height: $line-height-text-sm;
+  @include truncate(2);
+}
+
+.footer {
+  color: $gray-500;
+  font-weight: 400;
+  font-size: $font-size-text-xs;
+  line-height: $line-height-text-xs;
+}

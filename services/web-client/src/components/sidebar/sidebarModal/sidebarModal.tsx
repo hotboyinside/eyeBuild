@@ -10,19 +10,20 @@ import {
   Title,
 } from "@/components/common";
 import { ISidebarModal } from "./sidebarModal.types";
+import { Sizes } from "@/enums/size.enum";
 
 export const SidebarModal = ({ isOpen, onClose, onLogout }: ISidebarModal) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalContent>
-        <IconBox size="xl" variant="outlined">
-          <LogoutIcon size="xl"/>
+        <IconBox size={Sizes.XL} variant="outlined">
+          <LogoutIcon size={Sizes.XL} />
         </IconBox>
         <Heading gap="md" align="center">
-          <Title tag="h2" size="lg">
+          <Title tag="h2" size={Sizes.LG}>
             Log out of EyeBuild?
           </Title>
-          <Paragraph size="sm">
+          <Paragraph size={Sizes.SM}>
             Are you sure you want to log out? You’ll be redirected to the Log In
             page.
           </Paragraph>
@@ -30,7 +31,7 @@ export const SidebarModal = ({ isOpen, onClose, onLogout }: ISidebarModal) => {
       </ModalContent>
       <ModalActions>
         <Button
-          size="lg"
+          size={Sizes.LG}
           color="inherit"
           variant="outlined"
           fullWidth
@@ -38,7 +39,7 @@ export const SidebarModal = ({ isOpen, onClose, onLogout }: ISidebarModal) => {
         >
           Cancel
         </Button>
-        <Button size="lg" fullWidth onClick={onLogout}>
+        <Button size={Sizes.LG} fullWidth onClick={onLogout}>
           Log Out
         </Button>
       </ModalActions>

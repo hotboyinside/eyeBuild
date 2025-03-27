@@ -1,0 +1,16 @@
+@use "@/assets/styles/variables/colors" as *;
+@use "@/assets/styles/variables/radius" as *;
+
+.paper {
+  background-color: $white;
+  border: 1px solid $gray-200;
+  border-radius: $radius-xl;
+}
+
+.primary {
+  background-color: $white;
+}
+
+.secondary {
+  background-color: $gray-25;
+}

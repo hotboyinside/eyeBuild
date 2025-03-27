@@ -7,6 +7,8 @@ import { useCallback, useState } from "react";
 import { SidebarAvatarCard } from "./sidebarAvatarCard";
 import { SidebarNavMenu } from "./sidebarNavMenu";
 import { useCurrentUser } from "@/store/currentUser";
+import { UserStatuses } from "@/enums/ users.enum";
+import { Sizes } from "@/enums/size.enum";
 
 export const Sidebar = ({ className }: ISidebar) => {
   const { user } = useCurrentUser();
@@ -29,7 +31,7 @@ export const Sidebar = ({ className }: ISidebar) => {
           <Button
             variant="outlined"
             color="inherit"
-            size="sm"
+            size={Sizes.SM}
             onlyIcon
             noOutline
             onClick={toggleSidebarCollapse}
@@ -44,7 +46,7 @@ export const Sidebar = ({ className }: ISidebar) => {
           <SidebarAvatarCard
             fullname={user?.fullName || "Unknown"}
             username={user?.username || "Unknown"}
-            status="online"
+            status={UserStatuses.ONLINE}
             collapsed={collapsed}
           />
         </footer>

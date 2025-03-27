@@ -1,4 +1,4 @@
-import { Heading, Title } from "@/components/common";
+import { Heading, Paper, Title } from "@/components/common";
 import styles from "./userDetailsCard.module.scss";
 import { IUserDetailsCard } from "./userDetailsCard.types";
 import { Sizes } from "@/enums/size.enum";
@@ -9,7 +9,7 @@ export const UserDetailsCard = ({
   ...other
 }: IUserDetailsCard) => {
   return (
-    <div className={styles.card} {...other}>
+    <Paper className={styles.card} variant="secondary" {...other}>
       <Heading underline gap={Sizes.MD} underlineMargin={Sizes.SM}>
         <Title tag="h2" size={Sizes.LG}>
           {title}
@@ -21,11 +21,11 @@ export const UserDetailsCard = ({
             <div className={styles.label}>{label}</div>
             <div className={styles.value}>
               {icon && <span className={styles.icon}>{icon}</span>}
-              {value || "No company"}
+              <span className={styles.text}>{value}</span>
             </div>
           </li>
         ))}
       </ul>
-    </div>
+    </Paper>
   );
 };

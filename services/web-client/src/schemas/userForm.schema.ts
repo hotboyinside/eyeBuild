@@ -1,17 +1,24 @@
 import { z } from "zod";
 import { ErrorMessages } from "../enums/error-messages.enum";
 
-export const userFormSchema  = z.object({
+const MAX_LENGTH = 255;
+
+export const userFormSchema = z.object({
   fullName: z
     .string()
     .regex(
-      /^[\p{L}\p{M}`'-.]+ [\p{L}\p{M}`'-.]+$/u,
+      /^[\p{L}\p{M}`'-.]+(?:-[\p{L}\p{M}`'-.]+)?(?: [\p{L}\p{M}`'-.]+(?:-[\p{L}\p{M}`'-.]+)?)+$/u,
       ErrorMessages.INVALID_FULL_NAME
-    ),
-    email: z
+    )
+    .max(MAX_LENGTH, ErrorMessages.INVALID_FULL_NAME),
+  email: z
     .string()
-    .email(ErrorMessages.INVALID_EMAIL)
-    .min(1, ErrorMessages.INVALID_EMAIL),
+    .regex(
+      /^(?![_.-])([a-zA-Z0-9._-]{1,64})@(?![-.])([a-zA-Z0-9-]+\.)+([a-zA-Z]{2,})$/,
+      ErrorMessages.INVALID_EMAIL
+    )
+    .min(1, ErrorMessages.INVALID_EMAIL)
+    .max(MAX_LENGTH, ErrorMessages.INVALID_EMAIL),
   phone: z
     .string()
     .regex(
@@ -21,7 +28,8 @@ export const userFormSchema  = z.object({
   companyName: z.string().optional(),
   username: z
     .string()
-    .regex(/^[a-zA-Z0-9]{4,25}$/, ErrorMessages.REQUIRED_USERNAME),
+    .regex(/^[a-zA-Z0-9]{4,25}$/, ErrorMessages.REQUIRED_USERNAME)
+    .max(MAX_LENGTH, ErrorMessages.REQUIRED_USERNAME),
   role: z.string().min(1, ErrorMessages.INVALID_ROLE),
   password: z
     .string()
@@ -29,7 +37,8 @@ export const userFormSchema  = z.object({
     .min(8, ErrorMessages.INVALID_PASSWORD)
     .regex(/[A-Z]/, ErrorMessages.INVALID_PASSWORD)
     .regex(/[a-z]/, ErrorMessages.INVALID_PASSWORD)
-    .regex(/\d/, ErrorMessages.INVALID_PASSWORD),
+    .regex(/\d/, ErrorMessages.INVALID_PASSWORD)
+    .max(MAX_LENGTH, ErrorMessages.INVALID_PASSWORD),
 });
 
 export type UserFormValues = z.infer<typeof userFormSchema>;

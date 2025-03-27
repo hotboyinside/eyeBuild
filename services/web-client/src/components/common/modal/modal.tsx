@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { CloseIcon } from "../icons";
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "../button";
+import { Sizes } from "@/enums/size.enum";
 
 export const Modal = ({ isOpen, onClose, children }: IModal) => {
   const [mounted, setMounted] = useState(false);
@@ -36,7 +37,7 @@ export const Modal = ({ isOpen, onClose, children }: IModal) => {
           noOutline
           noBackground
           noPadding
-          size="sm"
+          size={Sizes.SM}
           color="inherit"
         >
           <CloseIcon size="lg" />

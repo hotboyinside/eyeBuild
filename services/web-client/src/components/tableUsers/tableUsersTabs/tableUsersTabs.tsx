@@ -19,6 +19,7 @@ import { debounce } from "lodash";
 import { RoleTabs, useUserStore } from "@/store/user";
 import { DEBOUNCE_MS } from "@/constants/lodash";
 import { formatRole } from "@/helpers";
+import { Sizes } from "@/enums/size.enum";
 
 const roles: RoleTabs[] = [Role.CLIENT, Role.FRANCHISEE, Role.ADMIN];
 
@@ -48,7 +49,7 @@ export const TableUsersTabs = () => {
       className={styles.scrollFix}
       aria-label="tem"
       variant="outlined"
-      size="md"
+      size={Sizes.MD}
       onChange={(index) => setRole(roles[index])}
       value={roles.indexOf(role)}
     >
@@ -63,17 +64,17 @@ export const TableUsersTabs = () => {
         <div className={styles.right}>
           <Input
             placeholder="Search"
-            size="sm"
+            size={Sizes.SM}
             defaultValue={search}
             onChange={handleSearch}
-            startIcon={<SearchIcon size="lg" />}
+            startIcon={<SearchIcon size={Sizes.LG} />}
           />
           <Link href={Page.ADD_USER} passHref>
             <Button
               variant="outlined"
-              size="md"
+              size={Sizes.MD}
               noOutline
-              startIcon={<PlusIcon size="lg" />}
+              startIcon={<PlusIcon size={Sizes.LG} />}
             >
               Add user
             </Button>

@@ -1,5 +1,4 @@
 services:
-
   web-client:
     build:
       context: ../../services/web-client
@@ -33,6 +32,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - RABBITMQ_URL=amqp://rabbitmq:5672
       - JWT_SECRET=${JWT_SECRET}
       - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
@@ -46,7 +46,7 @@ services:
       - SUPERADMIN_PHONE=${SUPERADMIN_PHONE}
       - SUPERADMIN_COMPANY_NAME=${SUPERADMIN_COMPANY_NAME}
       - SUPERADMIN_FULLNAME=${SUPERADMIN_FULLNAME}
-      - SUPERADMIN_COMPANY_EMAIL=${SUPERADMIN_COMPANY_EMAIL} 
+      - SUPERADMIN_COMPANY_EMAIL=${SUPERADMIN_COMPANY_EMAIL}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik
@@ -56,9 +56,10 @@ services:
     depends_on:
       - mongo
       - traefik
+      - rabbitmq
     networks:
       - traefik
-  
+
   mongo:
     image: mongo:7
     restart: always
@@ -82,7 +83,19 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - traefik
 
 networks:
   traefik:
     driver: bridge
+
+volumes:
+  rabbitmq_data:

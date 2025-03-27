@@ -53,16 +53,16 @@ export const getTickets = async (
 export const updateTicket = async (
   id: string,
   ticketData?: ITicketUpdateRequest
-): Promise<ITicketsUpdateResponse> => {
+): Promise<ITicketBase | null> => {
   try {
     const { data } = await request.put<
       ITicketRequest,
-      AxiosResponse<ITicketsUpdateResponse>
+      AxiosResponse<ITicketBase>
     >(`${BASE_TICKETS_URL}${id}`, ticketData);
 
     return data;
   } catch (error) {
     console.error("Update ticket error:", error);
-    return { ticket: undefined };
+    return null;
   }
 };

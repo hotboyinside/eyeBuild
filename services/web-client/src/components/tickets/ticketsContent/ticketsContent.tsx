@@ -5,9 +5,12 @@ import { TicketStatuses } from "@/enums/tickets.enum";
 import { useTicketStore } from "@/store/ticket";
 import { useEffect } from "react";
 import { TicketCards } from "./ticketCards";
+import { useRouter } from "next/navigation";
 
 import styles from "./ticketsContent.module.scss";
 import { formatCountTicketsForShowing } from "@/helpers/format.helper";
+import { generateUrl } from "@/helpers";
+import { Page } from "@/constants/routes";
 
 const tabStatuses = Object.values(TicketStatuses);
 
@@ -22,13 +25,17 @@ export const TicketsContent = () => {
     setStatus,
   } = useTicketStore();
 
+  const router = useRouter();
   const countPendingTickets = formatCountTicketsForShowing(
     pagination.totalPendingTickets
   );
 
   const onCloseTicketClick = (id: string, status: TicketStatuses) => {
     updateTicket(id, { status: status });
-    fetchTickets();
+  };
+
+  const onOpenTicketCLick = (id: string) => {
+    router.push(generateUrl(Page.TICKET, { id }));
   };
 
   const onChangeTabClick = (index: number) => {
@@ -38,6 +45,8 @@ export const TicketsContent = () => {
   useEffect(() => {
     fetchTickets();
   }, [fetchTickets]);
+
+  console.log("tickets", tickets);
 
   return (
     <div>
@@ -64,6 +73,7 @@ export const TicketsContent = () => {
               search={search}
               {...pagination}
               handleChangePage={setPage}
+              onOpenTicketCLick={onOpenTicketCLick}
               onCloseTicketClick={onCloseTicketClick}
             />
           </TabPanel>

@@ -32,7 +32,7 @@ export const UserDetailsContent = ({ userData }: { userData: IUserBase }) => {
     },
     {
       label: "Company name",
-      value: userData.companyName,
+      value: userData.companyName || 'No company',
       icon: <CompanyIcon size={Sizes.LG} />,
     },
   ];

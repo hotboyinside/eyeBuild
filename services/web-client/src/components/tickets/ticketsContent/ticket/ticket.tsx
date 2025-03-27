@@ -30,13 +30,15 @@ const getFormattedDate = (dateFromBackend: string | null | undefined) => {
 
 export const Ticket = ({
   ticketData,
+  onOpenTicketCLick,
   onCloseTicketClick,
 }: {
   ticketData: ITicketBase;
+  onOpenTicketCLick: (id: string) => void;
   onCloseTicketClick: (id: string, status: TicketStatuses) => void;
 }) => {
   const isPendingTicket = ticketData.status === TicketStatuses.PENDING;
-  const ticketTitle = `Ticket #${ticketData._id.substring(17, 24)}`;
+  const ticketTitle = `Ticket #${ticketData._id.substring(0, 7)}...`;
   const ticketFormattedCreateDate = getFormattedDate(ticketData.createdAt);
   const ticketFormattedClosedDate = getFormattedDate(ticketData?.closedDate);
   const initials = formatInitials(ticketData.fullName);
@@ -107,6 +109,7 @@ export const Ticket = ({
           type='button'
           startIcon={<ArrowRightUpIcon className={styles.startIcon} />}
           className={styles.extraButton}
+          onClick={() => onOpenTicketCLick(ticketData._id)}
         >
           Open chat
         </Button>

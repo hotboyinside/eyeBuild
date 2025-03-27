@@ -3,14 +3,11 @@
 @use "@/assets/styles/variables/typography" as *;
 @use "@/assets/styles/mixins" as *;
 
-.metricItem {
+.card {
     width: 20rem;
     display: flex;
     gap: 1rem;
     padding: 1.25rem;
-    background-color: white;
-    border: 1px solid $gray-200;
-    border-radius: $radius-xl;
 }
 
 .fullWidth {
@@ -20,7 +17,12 @@
 .content {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     gap: 0.5rem;
+}
+
+.icon {
+    flex-shrink: 0;
 }
 
 .title {

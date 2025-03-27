@@ -1,6 +1,7 @@
 @use "@/assets/styles/variables/colors" as *;
 @use "@/assets/styles/variables/radius" as *;
 @use "@/assets/styles/variables/animations" as *;
+@use "@/assets/styles/mixins" as *;
 
 .avatarCardWrap {
   position: relative;
@@ -26,6 +27,9 @@
     transform: scale(1);
     opacity: 1;
     transition: transform $transition, opacity $transition;
+    & > div {
+      @include truncate(1);
+    }
   }
 
   .avatar {

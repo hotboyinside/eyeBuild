@@ -2,6 +2,7 @@
 @use "@/assets/styles/variables/animations" as *;
 @use "@/assets/styles/variables/radius" as *;
 @use "@/assets/styles/variables/typography" as *;
+@use "@/assets/styles/mixins" as *;
 
 .button {
   display: inline-flex;
@@ -20,6 +21,10 @@
   &:disabled {
     cursor: default;
   }
+}
+
+.textContent {
+  @include truncate(1);
 }
 
 .sm {

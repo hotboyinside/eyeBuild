@@ -69,11 +69,11 @@ export const useTicketStore = create<TicketStore>((set, get) => ({
     }
   },
   updateTicket: async (id, ticketData) => {
-    const response = await updateTicket(id, ticketData);
-    if (response.ticket) {
+    const updatedTicket = await updateTicket(id, ticketData);
+    if (updatedTicket) {
       set(state => ({
         tickets: state.tickets.map(ticket =>
-          ticket._id === response.ticket!._id ? response.ticket! : ticket
+          ticket._id === updatedTicket._id ? updatedTicket : ticket
         ),
       }));
     }

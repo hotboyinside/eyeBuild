@@ -49,7 +49,7 @@ export const Button = forwardRef<HTMLButtonElement, IButton>(
         ) : (
           <>
             {startIcon && startIcon}
-            {children}
+            <span className={styles.textContent}>{children}</span>
             {endIcon && endIcon}
           </>
         )}

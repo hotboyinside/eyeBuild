@@ -22,7 +22,7 @@ export const Badge = ({
     >
       {variant === "dot" && <span className={styles.dot}></span>}
       {variant === "avatar" && <Avatar className={styles.avatar} size="xxs" />}
-      {variant === "icon" ? icon : title}
+      {variant === "icon" ? icon : <div className={styles.text}>{title}</div>}
       {variant === "close" && <CloseIcon className={styles.close} size="md" />}
     </div>
   );

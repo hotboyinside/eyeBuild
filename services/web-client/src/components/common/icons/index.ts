@@ -2,6 +2,7 @@ export type { IIcon, IIconBox } from "./icon.types";
 export { IconBox } from "./iconBox";
 
 export { ArrowIcon } from "./svg/arrowIcon";
+export { ArrowRightUpIcon } from "./svg/arrowRightUpIcon";
 export { CheckIcon } from "./svg/checkIcon";
 export { CheckLightIcon } from "./svg/checkLightIcon";
 export { CircleIcon } from "./svg/circleIcon";
@@ -43,4 +44,3 @@ export { DotIcon } from "./svg/dotIcon";
 export { RoleIcon } from "./svg/roleIcon";
 export { AtIcon } from "./svg/atIcon";
 export { AltArrowIcon } from "./svg/altArrowIcon";
-export { ArrowRightUpIcon } from "./svg/arrowRightUpIcon";

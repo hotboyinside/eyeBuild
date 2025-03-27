@@ -16,6 +16,7 @@ import { Severity } from "@/enums/severity.enum";
 import { useToast } from "@/hooks/useToast";
 import { isAxiosError } from "axios";
 import { HttpStatus } from "@/enums/https-status.enum";
+import { Sizes } from "@/enums/size.enum";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -90,7 +91,7 @@ export const LoginForm = () => {
         <Button
           color="secondary"
           variant="text"
-          size="sm"
+          size={Sizes.SM}
           noOutline
           noBackground
           type="button"
@@ -102,7 +103,7 @@ export const LoginForm = () => {
       <Button
         color="primary"
         variant="outlined"
-        size="lg"
+        size={Sizes.LG}
         fullWidth
         type="submit"
         disabled={isSubmitting}
