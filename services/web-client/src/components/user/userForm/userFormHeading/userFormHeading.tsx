@@ -1,5 +1,5 @@
 import styles from "./userFormHeading.module.scss";
-import { ArrowIcon, Button, Heading, Title } from "@/components/common";
+import { Button, Heading, Title } from "@/components/common";
 import Link from "next/link";
 import { IUserFormHeading } from "./userFormHeading.types";
 import { Sizes } from "@/enums/size.enum";
@@ -14,23 +14,28 @@ export const UserFormHeading = ({
 }: IUserFormHeading) => {
   return (
     <Heading underline gap="xxl">
-      <Link href={backLink}>
-        <Button
-          color="secondary"
-          variant="text"
-          size={Sizes.SM}
-          noOutline
-          noBackground
-          startIcon={<ArrowIcon />}
-        >
-          {backTitle}
-        </Button>
-      </Link>
       <div className={styles.titleWrap}>
         <Title tag="h1">{title}</Title>
-        <Button type="button" size={Sizes.MD} onClick={onFormSubmit} disabled={submitDisable}>
-          {submitTitle}
-        </Button>
+        <div className={styles.actions}>
+          <Link href={backLink} passHref>
+            <Button
+              type="button"
+              size={Sizes.MD}
+              color="neutral"
+              variant="outlined"
+            >
+              {backTitle}
+            </Button>
+          </Link>
+          <Button
+            type="button"
+            size={Sizes.MD}
+            onClick={onFormSubmit}
+            disabled={submitDisable}
+          >
+            {submitTitle}
+          </Button>
+        </div>
       </div>
     </Heading>
   );

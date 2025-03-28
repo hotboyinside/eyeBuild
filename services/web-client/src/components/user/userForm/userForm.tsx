@@ -145,7 +145,7 @@ export const UserForm = ({ mode, defaultValues }: IUserForm) => {
       <UserFormHeading
         title={isEditMode ? "Edit user" : "Add user"}
         onFormSubmit={handleRequestSubmit}
-        backTitle={isEditMode ? "Back to Profile" : "Back to User Management"}
+        backTitle="Cancel"
         backLink={isEditMode ? `${Page.USERS}/${id || ""}` : Page.USERS}
         submitTitle={isEditMode ? "Save" : "Add user"}
         submitDisable={isEditMode ? isFormInvalid() : false}

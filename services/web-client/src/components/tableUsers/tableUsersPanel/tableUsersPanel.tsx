@@ -31,9 +31,9 @@ import { Page } from "@/constants/routes";
 import { ITableUsersPanel } from "./tableUsersPanel.types";
 import clsx from "clsx";
 import {
-  formatCapitalize,
   formatInitials,
   formatPhone,
+  formatRole,
   generateUrl,
 } from "@/helpers";
 import { useCurrentUser } from "@/store/currentUser";
@@ -77,7 +77,7 @@ export const TableUsersPanel = ({
     <TableContainer className={styles.container}>
       <div className={styles.header}>
         <Title size='lg' weight='medium'>
-          {formatCapitalize(role)}
+          {formatRole(role)}
         </Title>
         <Badge severity='info' title={total.toString()} />
       </div>

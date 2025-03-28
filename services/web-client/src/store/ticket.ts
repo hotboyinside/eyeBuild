@@ -26,7 +26,7 @@ interface TicketStore {
     status?: TicketStatuses,
     page?: number
   ) => void;
-  updateTicket: (id: string, ticketData: ITicketUpdateRequest) => Promise<void>;
+  closeTicket: (id: string, ticketData: ITicketUpdateRequest) => Promise<void>;
   setRole: (role: RoleTabs) => void;
   setPage: (page: number) => void;
   setSearch: (search: string) => void;
@@ -68,10 +68,14 @@ export const useTicketStore = create<TicketStore>((set, get) => ({
       set({ tickets: [] });
     }
   },
-  updateTicket: async (id, ticketData) => {
+  closeTicket: async (id, ticketData) => {
     const updatedTicket = await updateTicket(id, ticketData);
     if (updatedTicket) {
       set(state => ({
+        pagination: {
+          ...state.pagination,
+          totalPendingTickets: state.pagination.totalPendingTickets - 1,
+        },
         tickets: state.tickets.map(ticket =>
           ticket._id === updatedTicket._id ? updatedTicket : ticket
         ),

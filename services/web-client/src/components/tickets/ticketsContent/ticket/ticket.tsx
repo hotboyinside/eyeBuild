@@ -38,10 +38,10 @@ export const Ticket = ({
   onCloseTicketClick: (id: string, status: TicketStatuses) => void;
 }) => {
   const isPendingTicket = ticketData.status === TicketStatuses.PENDING;
-  const ticketTitle = `Ticket #${ticketData._id.substring(0, 7)}...`;
+  const ticketTitle = `Ticket #${ticketData._id.substring(17, 24)}`;
   const ticketFormattedCreateDate = getFormattedDate(ticketData.createdAt);
   const ticketFormattedClosedDate = getFormattedDate(ticketData?.closedDate);
-  const initials = formatInitials(ticketData.fullName);
+  const initials = formatInitials(ticketData.fullName) || "";
 
   return (
     <div className={styles.root}>
@@ -71,7 +71,7 @@ export const Ticket = ({
           )}
         </div>
         <div className={styles.avatarContainer}>
-          <Avatar variant='initials' initials={initials} size='xs' />
+          <Avatar variant='initials' initials={initials!} size='xs' />
           <span className={styles.username}>{ticketData.fullName}</span>
         </div>
       </div>

@@ -21,17 +21,18 @@ export const TicketsContent = () => {
     pagination,
     setPage,
     fetchTickets,
-    updateTicket,
+    closeTicket,
     setStatus,
   } = useTicketStore();
 
   const router = useRouter();
+
   const countPendingTickets = formatCountTicketsForShowing(
     pagination.totalPendingTickets
   );
 
   const onCloseTicketClick = (id: string, status: TicketStatuses) => {
-    updateTicket(id, { status: status });
+    closeTicket(id, { status: status });
   };
 
   const onOpenTicketCLick = (id: string) => {
@@ -45,8 +46,6 @@ export const TicketsContent = () => {
   useEffect(() => {
     fetchTickets();
   }, [fetchTickets]);
-
-  console.log("tickets", tickets);
 
   return (
     <div>
@@ -66,7 +65,7 @@ export const TicketsContent = () => {
           ))}
         </TabList>
         {tabStatuses.map((status, index) => (
-          <TabPanel key={status} index={index}>
+          <TabPanel className={styles.extraPanel} key={status} index={index}>
             <TicketCards
               tickets={tickets}
               status={status}

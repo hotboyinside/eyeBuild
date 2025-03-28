@@ -215,7 +215,7 @@ export class TicketsService {
     }
     const mockTickets: IMockTicket[] = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 120; i++) {
       const randomUser =
         existedUsers[Math.floor(Math.random() * existedUsers.length)];
       const randomType = types[Math.floor(Math.random() * types.length)];

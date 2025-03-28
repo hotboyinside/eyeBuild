@@ -13,6 +13,7 @@ import { formatCountTicketsForShowing } from "@/helpers/format.helper";
 export const SidebarNavMenu = ({ className, collapsed }: ISidebarNavMenu) => {
   const { user } = useCurrentUser();
   const pathname = usePathname();
+
   const { pagination } = useTicketStore();
   const pendingTicketsCount = formatCountTicketsForShowing(
     pagination.totalPendingTickets

@@ -34,18 +34,18 @@ export const TablePagination = ({
   return (
     <nav
       className={clsx(styles.nav, styles[size], className)}
-      aria-label="Pagination Navigation"
+      aria-label='Pagination Navigation'
       {...other}
     >
       <Button
         className={styles.prev}
-        color="inherit"
-        variant="outlined"
+        color='inherit'
+        variant='outlined'
         onClick={handlePrev}
         disabled={currentPage === 1}
         aria-label="Go to previous page"
+        startIcon={<ArrowIcon size="lg" />}
       >
-        <ArrowIcon size="lg" />
         Previous
       </Button>
 
@@ -61,7 +61,7 @@ export const TablePagination = ({
                 [styles.active]: currentPage === page,
               })}
               key={page}
-              color="inherit"
+              color='inherit'
               variant={currentPage === page ? "outlined" : "contained"}
               onClick={() => handleChangePage(page)}
               aria-label={`Go to page ${page}`}
@@ -75,14 +75,14 @@ export const TablePagination = ({
 
       <Button
         className={styles.next}
-        color="inherit"
-        variant="outlined"
+        color='inherit'
+        variant='outlined'
         onClick={handleNext}
         disabled={currentPage === totalPages}
         aria-label="Go to next page"
+        endIcon={<ArrowIcon size="lg" />}
       >
         Next
-        <ArrowIcon size="lg" />
       </Button>
     </nav>
   );

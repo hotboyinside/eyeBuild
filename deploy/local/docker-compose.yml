@@ -60,6 +60,31 @@ services:
     networks:
       - traefik
 
+  socket:
+    restart: always
+    build:
+      context: ../../services/socket
+      dockerfile: Dockerfile.dev
+    volumes:
+      - "../../services/socket:/app"
+    ports:
+      - "9002:9002"
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - JWT_SECRET=jwt_secret_key
+      - COOKIE_SECRET=86032f8346e24f68ad9a694f39de0ff80deeb7682db2ebd8147b06f034b1ce7d
+      - CLIENT_URL=http://eyebuild.localhost/
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.socket.rule=Host(`eyebuild.localhost`) && PathPrefix(`/socket.io`)
+      - traefik.http.routers.socket.entrypoints=http
+      - traefik.http.services.socket.loadbalancer.server.port=9002
+    depends_on:
+      - rabbitmq
+    networks:
+      - traefik
+
   mongo:
     image: mongo:7
     restart: always

@@ -48,6 +48,7 @@ export class UsersService {
     if (!this.roleService.isRoleHigher(currentUser.role, userData.role)) {
       throw new ForbiddenException(ErrorMessages.USER_PERMISSION);
     }
+    userData.createdBy = new Types.ObjectId(currentUser._id);
     const createdUser = new this.userModel(userData);
     return createdUser.save();
   }
@@ -136,7 +137,7 @@ export class UsersService {
   async update(
     currentUser: IUser,
     id: Types.ObjectId,
-    updateUserDto: UpdateUserDto,
+    userData: UpdateUserDto,
   ) {
     const userToUpdate = await this.userModel.findById(id);
     if (!userToUpdate) {
@@ -145,7 +146,7 @@ export class UsersService {
     if (!this.roleService.isRoleHigher(currentUser.role, userToUpdate.role)) {
       throw new ForbiddenException(ErrorMessages.USER_PERMISSION);
     }
-    Object.assign(userToUpdate, updateUserDto);
+    Object.assign(userToUpdate, userData);
     const updatedUser = await userToUpdate.save();
     return updatedUser;
   }
@@ -173,13 +174,13 @@ export class UsersService {
     const existingSuperAdmin = await this.userModel
       .findOne({ role: Role.SUPERADMIN })
       .exec();
-    if (existingSuperAdmin) return;
+    if (existingSuperAdmin) return existingSuperAdmin;
     const superAdminData = {
       ...this.configService.get<User>('superadmin'),
       role: Role.SUPERADMIN,
     };
     const superAdmin = new this.userModel(superAdminData);
-    await superAdmin.save();
+    return await superAdmin.save();
   }
 
   async createMockUsers() {
@@ -193,7 +194,11 @@ export class UsersService {
       fullName: string;
       companyEmail: string;
       role: Role;
+      createdBy: Types.ObjectId;
     }
+    const superAdmin = await this.createSuperAdminIfNotExists();
+    const superAdminId = superAdmin._id;
+
     const mockUsers: IMockUser[] = [];
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash('asd123qwe', saltRounds);
@@ -209,6 +214,7 @@ export class UsersService {
         fullName: `${FIRSTNAMES[Math.floor(Math.random() * FIRSTNAMES.length)]} ${LASTNAMES[Math.floor(Math.random() * LASTNAMES.length)]}`,
         companyEmail: `${FIRSTNAMES[Math.floor(Math.random() * FIRSTNAMES.length)].toLowerCase()}@${DOMAINS[Math.floor(Math.random() * DOMAINS.length)]}`,
         role: role,
+        createdBy: superAdminId,
       };
       mockUsers.push(user);
     }

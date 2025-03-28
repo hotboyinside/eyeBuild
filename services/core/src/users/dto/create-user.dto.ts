@@ -10,6 +10,7 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
+import { Types } from 'mongoose';
 import {
   PASSWORD_MIN_LENGTH,
   PHONE_MAX_LENGTH,
@@ -68,4 +69,7 @@ export class CreateUserDto {
   @IsOptional()
   @IsBoolean()
   isBanned?: boolean;
+
+  @IsOptional()
+  createdBy?: Types.ObjectId;
 }

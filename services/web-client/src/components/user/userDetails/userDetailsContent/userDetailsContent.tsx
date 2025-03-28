@@ -1,7 +1,7 @@
 import { UserDetailsCard } from "../userDetailsCard";
 import styles from "./userDetailsContent.module.scss";
 import { IUserBase } from "@/types/user";
-import { formatRole, formatPhone } from "@/helpers";
+import { formatPhone, formatCapitalize } from "@/helpers";
 import {
   AtIcon,
   CompanyIcon,
@@ -40,7 +40,7 @@ export const UserDetailsContent = ({ userData }: { userData: IUserBase }) => {
   const accountSettings = [
     {
       label: "Role",
-      value: formatRole(userData.role),
+      value: formatCapitalize(userData.role),
       icon: <DotIcon size={Sizes.LG} />,
     },
     {

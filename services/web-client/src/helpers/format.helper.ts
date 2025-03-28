@@ -14,7 +14,11 @@ export const formatRole = (role: string): string => {
   return formatCapitalize(role.toLowerCase()) + "s";
 };
 
-export const formatInitials = (name: string): string => {
+export const formatInitials = (name?: string): string | null => {
+  if (!name) {
+    return null;
+  }
+
   const words = name.trim().split(/\s+/);
   return words.length > 1
     ? (words[0][0] + words[1][0]).toUpperCase()

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as bcrypt from 'bcryptjs';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { Role } from 'src/common/enums/roles.enum';
 
 export type UserDocument = HydratedDocument<User>;
@@ -33,6 +33,12 @@ export class User {
 
   @Prop({ default: false })
   isBanned?: boolean;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Ticket' }] })
+  tickets?: Types.ObjectId[];
+
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  createdBy?: Types.ObjectId;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
